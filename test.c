@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#define THREAD_COUNT 2
-
+#define THREAD_COUNT 2 
 int counter = 0;
 
 void *increment(void *arguments) {
@@ -21,6 +20,6 @@ int main(void) {
 	for (int i = 0; i < THREAD_COUNT; i++) {
 		pthread_join(threads[i], NULL);
 	}
-	printf("Counter's value is %d\n", counter);
+	printf("Counter value is %d\n", counter);
 	return 0;
 }

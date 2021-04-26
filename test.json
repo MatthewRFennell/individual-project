@@ -1,0 +1,30 @@
+{
+	"thread_switches":
+	[
+		{
+			"to_thread": 2,
+			"at": "0x555555555234",
+			"hit": 1
+		},
+		{
+			"to_thread": 1,
+			"at": "0x5555555551bb",
+			"hit": 1
+		},
+		{
+			"to_thread": 3,
+			"at": "0x555555555234",
+			"hit": 1
+		},
+		{
+			"to_thread": 2,
+			"at": "end",
+			"hit": 1
+		},
+		{
+			"to_thread": 1,
+			"at": "end",
+			"hit": 1
+		}
+	]
+}
