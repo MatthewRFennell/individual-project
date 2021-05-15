@@ -11,27 +11,32 @@ class BreakListener:
 		self.hit_breakpoints = thread_hit_list
 
 	def __call__(self, event):
-		frame = gdb.selected_frame()
-		if event.breakpoint in thread_related_breakpoints:
-			frame = gdb.selected_frame().older()
-		thread_event = ""
-		if event.breakpoint == pthread_create:
-			thread_event = "pthread_create"
-		elif event.breakpoint == pthread_join:
-			thread_event = "pthread_join"
-		self.hit_breakpoints.append({"thread": gdb.selected_thread().num, "hits": hex(frame.pc()), "thread_event": thread_event})
+		if event.breakpoint not in entrypoint_breakpoints:
+			frame = gdb.selected_frame()
+			self.hit_breakpoints.append({"thread": gdb.selected_thread().num, "hits": hex(frame.pc())})
 		gdb.execute("continue")
 
 hit_breakpoints = {}
 hit_breakpoints["checkpoints"] = []
-thread_related_breakpoints = []
+entrypoint_breakpoints = []
 
+entry_point = gdb.Breakpoint("increment", gdb.BP_BREAKPOINT)
+entrypoint_breakpoints = [entry_point]
+hit_breakpoints["entry_points"] = list(set(map(lambda breakpoint: breakpoint.location, entrypoint_breakpoints)))
 counter = gdb.Breakpoint("counter", gdb.BP_WATCHPOINT, gdb.WP_ACCESS)
-pthread_create = gdb.Breakpoint("pthread_create", gdb.BP_BREAKPOINT)
-pthread_join = gdb.Breakpoint("pthread_join", gdb.BP_BREAKPOINT)
-thread_related_breakpoints.extend([pthread_create, pthread_join])
 listener = BreakListener(hit_breakpoints["checkpoints"])
 gdb.events.stop.connect(listener)
 gdb.execute("run")
+modified_hit_breakpoints = []
+if len(hit_breakpoints["checkpoints"]) == 1:
+	modified_hit_breakpoints = hit_breakpoints["checkpoints"]
+else:
+	for i in range(len(hit_breakpoints["checkpoints"]) - 1):
+		if hit_breakpoints["checkpoints"][i]["thread"] != hit_breakpoints["checkpoints"][i + 1]["thread"]:
+			modified_hit_breakpoints.append(hit_breakpoints["checkpoints"][i])
+if len(hit_breakpoints["checkpoints"]) >= 2 and hit_breakpoints["checkpoints"][-2]["thread"] != hit_breakpoints["checkpoints"][-1]["thread"]:
+	modified_hit_breakpoints.append(hit_breakpoints["checkpoints"][-1])
+hit_breakpoints["checkpoints"] = modified_hit_breakpoints
+
 with open("checkpoints.json", "w+") as thread_switch_file:
 	json.dump(hit_breakpoints, thread_switch_file, indent=2)

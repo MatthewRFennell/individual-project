@@ -2,19 +2,23 @@
 
 import gdb
 import json
+from pprint import pprint
 
-def thread_switches():
-	with open("./checkpoints.json") as checkpoint_file:
-		checkpoints = json.load(checkpoint_file)["checkpoints"]
-		instructions = []
-		for checkpoint in checkpoints:
-			gdb.execute(f"thread {checkpoint['thread']}")
-			gdb.execute(f"tbreak *{checkpoint['hits']} thread {checkpoint['thread']}")
-			gdb.execute("continue")
+def execute_program_following(checkpoints):
+	current_threads = set(map(lambda thread: thread.global_num, gdb.inferiors()[0].threads()))
+
+
+def breakpoint_thread_entry_points(entry_points):
+	for entry_point in entry_points:
+		gdb.Breakpoint(entry_point)
 
 entry_breakpoint = gdb.Breakpoint("main")
 gdb.execute("run")
 gdb.execute("set scheduler-locking on")
 
-print("CARRYING OUT JSON SWITCHES")
-thread_switches()
+with open("./checkpoints.json") as checkpoint_file:
+	information = json.load(checkpoint_file)
+	entry_points = information["entry_points"]
+	breakpoint_thread_entry_points(entry_points)
+	checkpoints = information["checkpoints"]
+	execute_program_following(checkpoints)
