@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#define THREAD_COUNT 2 
+#define THREAD_COUNT 2
 int counter = 0;
 
 void *increment(void *arguments) {

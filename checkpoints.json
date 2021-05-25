@@ -2,14 +2,6 @@
   "checkpoints": [
     {
       "thread": 2,
-      "hits": "*0x5555555551bb"
-    },
-    {
-      "thread": 3,
-      "hits": "*0x5555555551bb"
-    },
-    {
-      "thread": 2,
       "hits": "*0x5555555551c4"
     },
     {
