@@ -41,6 +41,7 @@ if len(hit_breakpoints["checkpoints"]) >= 2 and \
 		hit_breakpoints["checkpoints"][-2]["thread"] != \
 		hit_breakpoints["checkpoints"][-1]["thread"]:
 	modified_hit_breakpoints.append(hit_breakpoints["checkpoints"][-1])
+pprint(hit_breakpoints)
 hit_breakpoints["checkpoints"] = modified_hit_breakpoints
 
 with open("checkpoints.json", "w+") as thread_switch_file:

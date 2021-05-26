@@ -1,16 +1,32 @@
 {
   "checkpoints": [
     {
+      "thread": 1,
+      "hits": "*0x555555555266"
+    },
+    {
       "thread": 2,
-      "hits": "*0x5555555551c4"
+      "hits": "*0x5555555551b1"
+    },
+    {
+      "thread": 3,
+      "hits": "*0x5555555551b1"
+    },
+    {
+      "thread": 2,
+      "hits": "*0x5555555551b5"
+    },
+    {
+      "thread": 3,
+      "hits": "*0x5555555551b5"
+    },
+    {
+      "thread": 2,
+      "hits": "*0x5555555551be"
     },
     {
       "thread": 3,
       "hits": "*0x5555555551c4"
-    },
-    {
-      "thread": 1,
-      "hits": "*0x55555555526e"
     }
   ],
   "entry_points": [
