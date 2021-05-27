@@ -4,7 +4,7 @@ import gdb
 import json
 import collections
 from pprint import pprint
-from checkpoint_parser import checkpoint_parser
+from .checkpoint_parser import checkpoint_parser
 
 THREADS_TO_COMPARE_COUNT = 2
 
