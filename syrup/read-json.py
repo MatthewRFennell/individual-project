@@ -1,10 +1,20 @@
 #!/bin/python3
 
+# GDB requires that we source our python script from within GDB to run it. This
+# means that the current directory is not included in the path, which means it
+# is not possible to import local modules. Therefore, we need to add the current
+# directory to the path to allow it to be run from within GDB. This has the
+# consequence that GDB must be launched from the directory outside the syrup
+# directory.
+import sys
+CURRENT_DIRECTORY = "syrup"
+sys.path.append(CURRENT_DIRECTORY)
+
 import gdb
 import json
 import collections
 from pprint import pprint
-from .checkpoint_parser import checkpoint_parser
+from replay_reader.checkpoint_parser import checkpoint_parser
 
 THREADS_TO_COMPARE_COUNT = 2
 
