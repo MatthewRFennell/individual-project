@@ -4,8 +4,17 @@ import gdb
 import json
 import collections
 from pprint import pprint
+from checkpoint_parser import checkpoint_parser
+
+THREADS_TO_COMPARE_COUNT = 2
 
 thread_breakpoints_have_been_hit = {1: True, 2: False, 3: False}
+
+class ThreadManager:
+	pass
+
+class BreakpointManager:
+	pass
 
 # Functions + classes
 class BreakListener:
@@ -23,10 +32,8 @@ class BreakListener:
 		if len(breakpoints) > 0:
 			next_thread_to_switch_to = breakpoints[0]["thread"]
 			gdb.execute(f"thread {next_thread_to_switch_to}")
-			print("Hello world!")
 			gdb.execute("continue")
 		gdb.execute("info threads")
-		print(thread_breakpoints_have_been_hit)
 
 def record_if_initial_breapoint_has_been_hit(breakpoints):
 	for breakpoint in breakpoints:
@@ -82,21 +89,41 @@ def breakpoint_thread_entry_points(entry_points):
 	for entry_point in entry_points:
 		breakpoint = gdb.Breakpoint(entry_point)
 
-# Main
-threads = collections.deque([{}] * 2, 2)
-breakpoints = collections.deque()
-entry_breakpoint = gdb.Breakpoint("main")
-gdb.execute("run")
-gdb.execute("set scheduler-locking on")
-entry_points = {}
-listener = BreakListener()
-gdb.events.stop.connect(listener)
+def main():
+	parser = checkpoint_parser("./checkpoints.json")
+	entry_points = parser.get_entry_points()
+	checkpoints = parser.get_checkpoints()
+	pprint(entry_points)
+	pprint(checkpoints)
 
-with open("./checkpoints.json") as checkpoint_file:
-	information = json.load(checkpoint_file)
-	entry_points = information["entry_points"]
-	breakpoint_thread_entry_points(entry_points)
-	checkpoints = information["checkpoints"]
-	initialise_breakpoints(checkpoints)
-	set_newly_created_thread_breakpoints()
-	gdb.execute("continue")
+if __name__ == "__main__":
+	main()
+
+## Shared between set_newly_created_thread_breakpoints and BreakListener
+#threads = collections.deque([{}] * 2, 2)
+## Shared between BreakListener, set_next_breakpoint, breakpoints_by_thread and initialise_breakpoints
+#breakpoints = collections.deque()
+#entry_breakpoint = gdb.Breakpoint("main")
+#gdb.execute("run")
+#gdb.execute("set scheduler-locking on")
+## Shared in record_if_initial_breapoint_has_been_hit, which is called from BreakListener
+#entry_points = {}
+#listener = BreakListener()
+#gdb.events.stop.connect(listener)
+#with open("./checkpoints.json") as checkpoint_file:
+#	information = json.load(checkpoint_file)
+#	entry_points = information["entry_points"]
+#	breakpoint_thread_entry_points(entry_points)
+#	checkpoints = information["checkpoints"]
+#	initialise_breakpoints(checkpoints)
+#	set_newly_created_thread_breakpoints()
+#	gdb.execute("continue")
+
+#	with open("./checkpoints.json") as checkpoint_file:
+#		information = json.load(checkpoint_file)
+#		entry_points = information["entry_points"]
+#		breakpoint_thread_entry_points(entry_points)
+#		checkpoints = information["checkpoints"]
+#		initialise_breakpoints(checkpoints)
+#		set_newly_created_thread_breakpoints()
+#		gdb.execute("continue")
