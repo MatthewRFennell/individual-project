@@ -47,11 +47,16 @@ class BreakpointManager:
 		return next(filter(
 				lambda checkpoint: checkpoint["hit"] == False, self.checkpoints))
 
-	def hit_expected(self):
+	def mark_next_checkpoint_as_hit(self):
 		self.get_next_checkpoint()["hit"] = True
+		pprint(self.checkpoints)
+
+	def is_next_breakpoint(self, breakpoint):
+		return breakpoint.location == self.get_next_checkpoint()["hits"] and \
+				breakpoint.thread == self.get_next_checkpoint()["thread"]
 
 	def _next_checkpoint_for(self, thread):
-		return next(filter(lambda checkpoint: checkpoint["thread"] == thread and
+		return next(filter(lambda checkpoint: checkpoint["thread"] == thread and \
 				checkpoint["hit"] == False, self.checkpoints))
 
 class ExecutionManager:
@@ -66,8 +71,8 @@ class ExecutionManager:
 			)
 
 	def run_to_next_checkpoint_if_hit(self, breakpoint):
-		if breakpoint == self._breakpoint_manager.get_next_checkpoint():
-			breakpoint_manager.hit_expected()
+		if self._breakpoint_manager.is_next_breakpoint(breakpoint):
+			self._breakpoint_manager.mark_next_checkpoint_as_hit()
 			self.run_to_next_checkpoint()
 
 	def _continue_until_next_checkpoint(self, thread):

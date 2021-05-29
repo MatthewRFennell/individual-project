@@ -3,6 +3,14 @@
 import gdb
 import json
 
+class SyscallRecorder:
+	def __init__(self):
+		self.checkpoints = set()
+
+	def __call__(self, event):
+		self.checkpoints.add(hex(gdb.selected_frame().pc()))
+		gdb.execute("continue")
+
 # This class records the order in which checkpoints are hit when the program
 # executes. A checkpoint is an assembly instruction which reads from or writes
 # to a variable that is shared between threads.
@@ -12,11 +20,9 @@ class CheckpointRecorder:
 
 	def __init__(self):
 		self.hit_checkpoints = []
+		self._incomplete_syscalls = set()
 
-	# This function is called by GDB whenever a breakpoint is hit. We only set
-	# breakpoints for reads and writes to shared variables.
 	def __call__(self, event):
-		print("called!")
 		self._record_hit_checkpoint()
 		gdb.execute("continue")
 
@@ -31,7 +37,7 @@ class CheckpointRecorder:
 	def get_hit_checkpoints(self):
 		return self.hit_checkpoints
 
-# We record the names of the start routines of each thread for use in the replay 
+# We record the names of the start routines of each thread for use in the replay
 # later. This allows the replay tool to synchronise threads correctly.
 def thread_start_routines():
 	return ["increment"]
@@ -44,8 +50,18 @@ def set_shared_variable_breakpoints():
 	for shared_variable in shared_variables:
 		gdb.Breakpoint(shared_variable, gdb.BP_WATCHPOINT, gdb.WP_ACCESS)
 
-def set_syscall_breakpoints():
+def set_syscall_breakpoints(checkpoints):
+	for checkpoint in checkpoints:
+		gdb.execute(f"break *{checkpoint}")
+
+def get_thread_creation_checkpoints():
 	gdb.execute("catch syscall clone")
+	syscall_recorder = SyscallRecorder()
+	gdb.events.stop.connect(syscall_recorder)
+	gdb.execute("run")
+	gdb.execute("delete")
+	gdb.events.stop.disconnect(syscall_recorder)
+	return syscall_recorder.checkpoints
 
 def main():
 	CHECKPOINT_TAG = "checkpoints"
@@ -53,11 +69,16 @@ def main():
 	OUTPUT_FILE = "./checkpoints.json"
 	OUTPUT_FILE_INDENT_WIDTH = 2
 
+	thread_creation_checkpoints = get_thread_creation_checkpoints()
+	print(thread_creation_checkpoints)
+
+	gdb.execute("b main")
+	gdb.execute("run")
+	set_syscall_breakpoints(thread_creation_checkpoints)
+	set_shared_variable_breakpoints()
 	checkpoint_recorder = CheckpointRecorder()
 	gdb.events.stop.connect(checkpoint_recorder)
-	set_shared_variable_breakpoints()
-	set_syscall_breakpoints()
-	gdb.execute("run")
+	gdb.execute("continue")
 
 	replay = {}
 	replay[CHECKPOINT_TAG] = checkpoint_recorder.get_hit_checkpoints()
