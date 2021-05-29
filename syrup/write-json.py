@@ -21,6 +21,7 @@ class CheckpointRecorder:
 	def __init__(self):
 		self.hit_checkpoints = []
 		self._incomplete_syscalls = set()
+		self._created_threads = set([1])
 
 	def __call__(self, event):
 		self._record_hit_checkpoint()
@@ -29,18 +30,19 @@ class CheckpointRecorder:
 	def _record_hit_checkpoint(self):
 		thread_id = gdb.selected_thread().num
 		checkpoint_location = hex(gdb.selected_frame().pc())
+		if self._is_new_thread_clone_breakpoint(thread_id):
+			self._created_threads.add(thread_id)
+			return
 		self.hit_checkpoints.append({
 				self.THREAD_ID_TAG: thread_id,
 				self.CHECKPOINT_LOCATION_TAG: f"*{checkpoint_location}"
 		})
 
+	def _is_new_thread_clone_breakpoint(self, thread):
+		return thread not in self._created_threads
+
 	def get_hit_checkpoints(self):
 		return self.hit_checkpoints
-
-# We record the names of the start routines of each thread for use in the replay
-# later. This allows the replay tool to synchronise threads correctly.
-def thread_start_routines():
-	return ["increment"]
 
 # We want the interleavings of threads with respect to shared variables to be 
 # recorded. Therefore, we only need to record the ordering of writes and reads
@@ -63,17 +65,17 @@ def get_thread_creation_checkpoints():
 	gdb.events.stop.disconnect(syscall_recorder)
 	return syscall_recorder.checkpoints
 
+def pause_target_at_start():
+	gdb.Breakpoint("main")
+	gdb.execute("run")
+
 def main():
 	CHECKPOINT_TAG = "checkpoints"
-	THREAD_START_ROUTINE_TAG = "thread_start_routines"
 	OUTPUT_FILE = "./checkpoints.json"
 	OUTPUT_FILE_INDENT_WIDTH = 2
 
 	thread_creation_checkpoints = get_thread_creation_checkpoints()
-	print(thread_creation_checkpoints)
-
-	gdb.execute("b main")
-	gdb.execute("run")
+	pause_target_at_start()
 	set_syscall_breakpoints(thread_creation_checkpoints)
 	set_shared_variable_breakpoints()
 	checkpoint_recorder = CheckpointRecorder()
@@ -82,7 +84,6 @@ def main():
 
 	replay = {}
 	replay[CHECKPOINT_TAG] = checkpoint_recorder.get_hit_checkpoints()
-	replay[THREAD_START_ROUTINE_TAG] = thread_start_routines()
 
 	with open(OUTPUT_FILE, "w+") as output_file:
 		json.dump(replay, output_file, indent=OUTPUT_FILE_INDENT_WIDTH)
