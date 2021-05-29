@@ -16,6 +16,7 @@ class CheckpointRecorder:
 	# This function is called by GDB whenever a breakpoint is hit. We only set
 	# breakpoints for reads and writes to shared variables.
 	def __call__(self, event):
+		print("called!")
 		self._record_hit_checkpoint()
 		gdb.execute("continue")
 
@@ -43,20 +44,24 @@ def set_shared_variable_breakpoints():
 	for shared_variable in shared_variables:
 		gdb.Breakpoint(shared_variable, gdb.BP_WATCHPOINT, gdb.WP_ACCESS)
 
+def set_syscall_breakpoints():
+	gdb.execute("catch syscall clone")
+
 def main():
-	CHECKPOINT_JSON_TAG = "checkpoints"
-	START_ROUTINE_JSON_TAG = "thread_start_routines"
+	CHECKPOINT_TAG = "checkpoints"
+	THREAD_START_ROUTINE_TAG = "thread_start_routines"
 	OUTPUT_FILE = "./checkpoints.json"
 	OUTPUT_FILE_INDENT_WIDTH = 2
 
 	checkpoint_recorder = CheckpointRecorder()
 	gdb.events.stop.connect(checkpoint_recorder)
 	set_shared_variable_breakpoints()
+	set_syscall_breakpoints()
 	gdb.execute("run")
 
 	replay = {}
-	replay[CHECKPOINT_JSON_TAG] = checkpoint_recorder.get_hit_checkpoints()
-	replay[START_ROUTINE_JSON_TAG] = thread_start_routines()
+	replay[CHECKPOINT_TAG] = checkpoint_recorder.get_hit_checkpoints()
+	replay[THREAD_START_ROUTINE_TAG] = thread_start_routines()
 
 	with open(OUTPUT_FILE, "w+") as output_file:
 		json.dump(replay, output_file, indent=OUTPUT_FILE_INDENT_WIDTH)

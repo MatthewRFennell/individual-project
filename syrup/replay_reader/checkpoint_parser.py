@@ -1,13 +1,15 @@
+import json
+
 class checkpoint_parser:
-	_ENTRY_POINT_TAG_NAME = "entry_points"
-	_CHECKPOINT_TAG_NAME = "checkpoints"
+	_CHECKPOINT_TAG = "checkpoints"
+	_THREAD_START_ROUTINE_TAG = "thread_start_routines"
 
 	def __init__(self, checkpoint_file_name):
 		with open(checkpoint_file_name) as checkpoint_file:
 			self._information = json.load(checkpoint_file)
 
 	def get_entry_points(self):
-		return self._information[self._ENTRY_POINT_TAG_NAME]
+		return self._information[self._THREAD_START_ROUTINE_TAG]
 
 	def get_checkpoints(self):
-		return self._information[self._CHECKPOINT_TAG_NAME]
+		return self._information[self._CHECKPOINT_TAG]

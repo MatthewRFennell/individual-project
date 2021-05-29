@@ -16,124 +16,98 @@ import collections
 from pprint import pprint
 from replay_reader.checkpoint_parser import checkpoint_parser
 
-THREADS_TO_COMPARE_COUNT = 2
-
-thread_breakpoints_have_been_hit = {1: True, 2: False, 3: False}
-
 class ThreadManager:
-	pass
+	def __init__(self, checkpoints):
+		self._alive_threads = []
+		self._checkpoints = checkpoints
+
+	def get_all_threads(self):
+		return set(map(lambda checkpoint: checkpoint["thread"], self._checkpoints))
+
+	def _newly_created_threads(self):
+		currently_alive_threads = set(
+				map(lambda thread: thread.global_num, gdb.inferiors()[0].threads())
+		)
+		self._alive_threads = \
+				currently_alive_threads.difference(self._alive_threads)
+		return self._alive_threads
 
 class BreakpointManager:
-	pass
+	def __init__(self, checkpoints):
+		self.checkpoints = checkpoints
+		for checkpoint in self.checkpoints:
+			checkpoint.update({"hit": False})
 
-# Functions + classes
-class BreakListener:
-	def __call__(self, event):
-		record_if_initial_breapoint_has_been_hit(event.breakpoints)
-		set_newly_created_thread_breakpoints()
-		current_thread = breakpoints[0]["thread"]
-		breakpoints_to_consider = set(filter(lambda breakpoint: \
-				breakpoint.thread == current_thread, event.breakpoints))
-		for breakpoint in breakpoints_to_consider:
-			if breakpoint_corresponds_to_checkpoint(breakpoint, breakpoints[0]):
-				set_next_breakpoint()
-		if current_thread not in breakpoints_by_thread().keys():
-			gdb.execute("continue")
-		if len(breakpoints) > 0:
-			next_thread_to_switch_to = breakpoints[0]["thread"]
-			gdb.execute(f"thread {next_thread_to_switch_to}")
-			gdb.execute("continue")
-		gdb.execute("info threads")
-
-def record_if_initial_breapoint_has_been_hit(breakpoints):
-	for breakpoint in breakpoints:
-		if breakpoint.location in entry_points:
-			thread_breakpoints_have_been_hit[gdb.selected_thread().global_num] = True
-
-def reach_thread_starting_point(thread_id):
-	if thread_breakpoints_have_been_hit[thread_id]:
-		return
-	current_thread = gdb.selected_thread()
-	gdb.execute(f"thread {thread_id}")
-	gdb.execute("continue")
-	gdb.execute(f"thread {current_thread}")
-
-def set_next_breakpoint():
-	thread = breakpoints.popleft()["thread"]
-	if thread in breakpoints_by_thread().keys():
-		breakpoints_by_thread()[thread].popleft()
-		next_checkpoint = breakpoints_by_thread()[thread][0]
+	def set_next_breakpoint_for_thread(self, thread):
+		next_checkpoint = self._next_checkpoint_for(thread)["hits"]
 		next_breakpoint = gdb.Breakpoint(next_checkpoint, temporary=True)
 		next_breakpoint.thread = thread
 
-def breakpoint_corresponds_to_checkpoint(gdb_breakpoint, checkpoint):
-	return gdb_breakpoint.location == checkpoint["hits"] and \
-			gdb_breakpoint.thread == checkpoint["thread"]
+	def get_next_checkpoint(self):
+		return next(filter(
+				lambda checkpoint: checkpoint["hit"] == False, self.checkpoints))
 
-def breakpoints_by_thread():
-	threads = set()
-	for checkpoint in breakpoints:
-		threads.add(checkpoint["thread"])
-	breakpoints_by_thread = {}
-	for thread in threads:
-		breakpoints_by_thread[thread] = collections.deque()
-	for checkpoint in breakpoints:
-		breakpoints_by_thread[checkpoint["thread"]].append(checkpoint["hits"])
-	return breakpoints_by_thread
+	def hit_expected(self):
+		self.get_next_checkpoint()["hit"] = True
 
-def initialise_breakpoints(checkpoints):
-	for checkpoint in checkpoints:
-		breakpoints.append(checkpoint)
+	def _next_checkpoint_for(self, thread):
+		return next(filter(lambda checkpoint: checkpoint["thread"] == thread and
+				checkpoint["hit"] == False, self.checkpoints))
 
-def set_newly_created_thread_breakpoints():
-	threads.appendleft(
-			set(map(lambda thread: thread.global_num, gdb.inferiors()[0].threads())))
-	newly_created_threads = threads[0].difference(threads[1])
-	for thread in newly_created_threads:
-		next_breakpoint = breakpoints_by_thread()[thread][0]
-		thread_first_breakpoint = gdb.Breakpoint(next_breakpoint, temporary=True)
-		thread_first_breakpoint.thread = thread
-		reach_thread_starting_point(thread)
+class ExecutionManager:
+	def __init__(self, breakpoint_manager, thread_manager):
+		self._breakpoint_manager = breakpoint_manager
+		self._thread_manager = thread_manager
 
-def breakpoint_thread_entry_points(entry_points):
-	for entry_point in entry_points:
-		breakpoint = gdb.Breakpoint(entry_point)
+	def run_to_next_checkpoint(self):
+		while self._target_is_running():
+			self._continue_until_next_checkpoint(
+					self._breakpoint_manager.get_next_checkpoint()["thread"]
+			)
+
+	def run_to_next_checkpoint_if_hit(self, breakpoint):
+		if breakpoint == self._breakpoint_manager.get_next_checkpoint():
+			breakpoint_manager.hit_expected()
+			self.run_to_next_checkpoint()
+
+	def _continue_until_next_checkpoint(self, thread):
+		self._breakpoint_manager.set_next_breakpoint_for_thread(thread)
+		self.continue_thread(thread)
+
+	def _target_is_running(self):
+		return True
+
+	def _current_thread(self):
+		return gdb.selected_thread().global_num
+
+	def continue_thread(self, thread):
+		gdb.execute(f"thread {thread}")
+		gdb.execute("continue")
+
+# Functions + classes
+class BreakListener:
+	def __init__(self, execution_manager):
+		self._execution_manager = execution_manager
+
+	def __call__(self, event):
+		self._execution_manager.run_to_next_checkpoint_if_hit(event.breakpoint)
+
+def pause_target_at_beginning():
+	entry_breakpoint = gdb.Breakpoint("main")
+	gdb.execute("run")
+	gdb.execute("set scheduler-locking on")
 
 def main():
+	pause_target_at_beginning()
+
 	parser = checkpoint_parser("./checkpoints.json")
-	entry_points = parser.get_entry_points()
+
 	checkpoints = parser.get_checkpoints()
-	pprint(entry_points)
-	pprint(checkpoints)
+	breakpoint_manager = BreakpointManager(checkpoints)
+	thread_manager = ThreadManager(checkpoints)
+	execution_manager = ExecutionManager(breakpoint_manager, thread_manager)
+	gdb.events.stop.connect(BreakListener(execution_manager))
+	execution_manager.run_to_next_checkpoint()
 
 if __name__ == "__main__":
 	main()
-
-## Shared between set_newly_created_thread_breakpoints and BreakListener
-#threads = collections.deque([{}] * 2, 2)
-## Shared between BreakListener, set_next_breakpoint, breakpoints_by_thread and initialise_breakpoints
-#breakpoints = collections.deque()
-#entry_breakpoint = gdb.Breakpoint("main")
-#gdb.execute("run")
-#gdb.execute("set scheduler-locking on")
-## Shared in record_if_initial_breapoint_has_been_hit, which is called from BreakListener
-#entry_points = {}
-#listener = BreakListener()
-#gdb.events.stop.connect(listener)
-#with open("./checkpoints.json") as checkpoint_file:
-#	information = json.load(checkpoint_file)
-#	entry_points = information["entry_points"]
-#	breakpoint_thread_entry_points(entry_points)
-#	checkpoints = information["checkpoints"]
-#	initialise_breakpoints(checkpoints)
-#	set_newly_created_thread_breakpoints()
-#	gdb.execute("continue")
-
-#	with open("./checkpoints.json") as checkpoint_file:
-#		information = json.load(checkpoint_file)
-#		entry_points = information["entry_points"]
-#		breakpoint_thread_entry_points(entry_points)
-#		checkpoints = information["checkpoints"]
-#		initialise_breakpoints(checkpoints)
-#		set_newly_created_thread_breakpoints()
-#		gdb.execute("continue")
