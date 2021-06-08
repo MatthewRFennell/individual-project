@@ -10,6 +10,8 @@ import sys
 CURRENT_DIRECTORY = "syrup"
 sys.path.append(CURRENT_DIRECTORY)
 
+LOG_FILENAME = "log"
+
 import gdb
 import json
 import collections
@@ -35,10 +37,10 @@ class ThreadManager:
 
 	def _get_thread_out_of_assembly_code(self, thread):
 		current_thread = gdb.selected_thread().global_num
-		gdb.execute(f"thread {thread}")
+		gdb_execute(f"thread {thread}")
 		if self._is_in_assembly_code():
-			gdb.execute("finish")
-		gdb.execute(f"thread {current_thread}")
+			gdb_execute("finish")
+		gdb_execute(f"thread {current_thread}")
 
 	def get_all_threads_out_of_assembly_code(self):
 		print("I MADE IT TO get_all_threads_out_of_assembly_code")
@@ -46,7 +48,7 @@ class ThreadManager:
 		for thread in self._alive_threads:
 			self._get_thread_out_of_assembly_code(thread)
 		print("ALL THREADS SHOULD BE OUT OF ASSEMBLY CODE AT THIS POINT")
-		gdb.execute("info threads")
+		gdb_execute("info threads")
 
 class BreakpointManager:
 	def __init__(self, checkpoints):
@@ -56,7 +58,7 @@ class BreakpointManager:
 
 	def set_next_breakpoint_for_thread(self, thread):
 		next_checkpoint = self._next_checkpoint_for(thread)["hits"]
-		next_breakpoint = gdb.Breakpoint(next_checkpoint, temporary=True)
+		next_breakpoint = gdb_breakpoint_at(next_checkpoint, temporary=True)
 		next_breakpoint.thread = thread
 
 	def get_next_checkpoint(self):
@@ -85,6 +87,7 @@ class ExecutionManager:
 	def __init__(self, breakpoint_manager, thread_manager):
 		self._breakpoint_manager = breakpoint_manager
 		self._thread_manager = thread_manager
+		self._is_exiting_thread = False
 
 	def update_alive_threads(self):
 		self._thread_manager.update_alive_threads()
@@ -96,21 +99,45 @@ class ExecutionManager:
 			)
 
 	def run_to_next_checkpoint_if_hit(self, breakpoint):
-		self.update_alive_threads()
+		self.update_execution_state()
 		if self._breakpoint_manager.is_next_breakpoint(breakpoint):
-			self._breakpoint_manager.mark_next_checkpoint_as_hit()
-			self._thread_manager.get_all_threads_out_of_assembly_code()
+			self.mark_next_checkpoint_as_hit()
 			self.run_to_next_checkpoint()
 
+	def get_all_threads_out_of_assembly_code(self):
+		return self._thread_manager.get_all_threads_out_of_assembly_code()
+
+	def is_next_breakpoint(self, breakpoint):
+		return self._breakpoint_manager.is_next_breakpoint(breakpoint)
+
+	def mark_next_checkpoint_as_hit(self):
+		self._breakpoint_manager.mark_next_checkpoint_as_hit()
+
+	def is_exiting_thread(self):
+		return self._is_exiting_thread
+
+	def mark_thread_as_exited(self):
+		self._is_exiting_thread = False
+
+	def update_execution_state(self):
+		self.update_alive_threads()
+		self.get_all_threads_out_of_assembly_code()
+
 	def _continue_until_next_checkpoint(self, thread):
+		print("I MADE IT TO continue_until_next_checkpoint")
 		self._breakpoint_manager.set_next_breakpoint_for_thread(thread)
 		self.continue_thread(thread)
 
 	def _continue_until_next_checkpoint_or_end(self, thread):
+		print(f"I MADE IT TO continue_until_next_checkpoint_or_end: {thread}")
 		if self._breakpoint_manager.thread_should_finish(thread):
-			self.continue_thread(thread)
+			self._continue_until_end(thread)
 			return
 		self._continue_until_next_checkpoint(thread)
+
+	def _continue_until_end(self, thread):
+		self._is_exiting_thread = True
+		self.continue_thread(thread)
 
 	def _target_is_running(self):
 		return True
@@ -119,28 +146,66 @@ class ExecutionManager:
 		return gdb.selected_thread().global_num
 
 	def continue_thread(self, thread):
-		gdb.execute(f"thread {thread}")
-		gdb.execute("continue")
+		print(f"I MADE IT TO continue_thread: continuing thread {thread}")
+		gdb_execute(f"thread {thread}")
+		gdb_execute("continue")
 
-# Functions + classes
 class BreakListener:
 	def __init__(self, execution_manager):
 		self._execution_manager = execution_manager
 
 	def __call__(self, event):
-		if not self._is_checkpoint(event):
+		if not self._is_checkpoint(event) and not \
+				self._execution_manager.is_exiting_thread():
+			return
+		is_guaranteed_hit = self._execution_manager.is_exiting_thread()
+		if is_guaranteed_hit:
+			self._execution_manager.update_execution_state()
+			self._execution_manager.mark_next_checkpoint_as_hit()
+			self._execution_manager.run_to_next_checkpoint()
 			return
 		self._execution_manager.run_to_next_checkpoint_if_hit(event.breakpoint)
 	
 	def _is_checkpoint(self, event):
 		return hasattr(event, "breakpoint")
 
+class ThreadCreationListener:
+	def __init__(self, execution_manager):
+		self._execution_manager = execution_manager
+
+	def __call__(self, event):
+		print(f"CREATED THREAD {event.inferior_thread}")
+		write_to_log("\"Hit start routine of new thread\"")
+		gdb_execute("info threads")
+		self._execution_manager.mark_next_checkpoint_as_hit()
+		self._execution_manager.run_to_next_checkpoint()
+
 def pause_target_at_beginning():
-	entry_breakpoint = gdb.Breakpoint("main")
-	gdb.execute("run")
-	gdb.execute("set scheduler-locking on")
+	entry_breakpoint = gdb_breakpoint_at("main")
+	gdb_execute("run")
+	gdb_execute("set scheduler-locking on")
+
+def reset_log():
+	open("log", "w").close()
+
+def write_to_log(instruction):
+	with open(LOG_FILENAME, "a") as log:
+		log.write(f"{instruction}\n")
+
+def gdb_execute(instruction):
+	write_to_log(instruction)
+	gdb.execute(instruction)
+
+def gdb_breakpoint_at(location, temporary=False):
+	breakpoint_prefix = ""
+	if temporary:
+		breakpoint_prefix = "t"
+	write_to_log(f"{breakpoint_prefix}b {location}")
+	return gdb.Breakpoint(location, temporary=temporary)
 
 def main():
+	reset_log()
+
 	pause_target_at_beginning()
 
 	parser = checkpoint_parser("./checkpoints.json")
@@ -150,6 +215,7 @@ def main():
 	thread_manager = ThreadManager(checkpoints)
 	execution_manager = ExecutionManager(breakpoint_manager, thread_manager)
 	gdb.events.stop.connect(BreakListener(execution_manager))
+	gdb.events.new_thread.connect(ThreadCreationListener(execution_manager))
 	execution_manager.run_to_next_checkpoint()
 
 if __name__ == "__main__":

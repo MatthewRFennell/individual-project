@@ -4,6 +4,7 @@ import gdb
 import json
 from pprint import pprint
 
+START_ROUTINE_TAG = "thread_start_routines"
 THREAD_ID_TAG = "thread"
 CHECKPOINT_LOCATION_TAG = "hits"
 CHECKPOINT_ID_TAG = "id"
@@ -242,10 +243,13 @@ class CheckpointMatcher:
 				checkpoint[THREAD_ID_TAG] == thread_id,
 				self._unmatched_created_thread_checkpoint_ids), None)
 		return matched_checkpoint
-	
+
 	def _next_thread_creation_by_thread(self, thread_id):
 		return next(filter(lambda thread_creation:
 				thread_creation["creator_thread"] == thread_id, self._thread_creations))
+
+def get_start_routines():
+	return ["increment"]
 
 def main():
 	CHECKPOINT_TAG = "checkpoints"
@@ -273,6 +277,10 @@ def main():
 	checkpoints = \
 			checkpoint_matcher.checkpoints_with_correctly_ordered_thread_creations()
 	replay[CHECKPOINT_TAG] = checkpoints
+
+	start_routines = get_start_routines()
+	replay[START_ROUTINE_TAG] = start_routines
+
 	for checkpoint in checkpoints:
 		checkpoint[CHECKPOINT_LOCATION_TAG] = \
 				"*" + checkpoint[CHECKPOINT_LOCATION_TAG]

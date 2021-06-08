@@ -8,7 +8,7 @@ class checkpoint_parser:
 		with open(checkpoint_file_name) as checkpoint_file:
 			self._information = json.load(checkpoint_file)
 
-	def get_entry_points(self):
+	def get_start_routines(self):
 		return self._information[self._THREAD_START_ROUTINE_TAG]
 
 	def get_checkpoints(self):
