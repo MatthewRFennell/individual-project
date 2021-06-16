@@ -11,6 +11,7 @@ CURRENT_DIRECTORY = "syrup"
 sys.path.append(CURRENT_DIRECTORY)
 
 LOG_FILENAME = "log"
+CHECKPOINT_LOCATION_TAG = "hits"
 
 import gdb
 import json
@@ -20,7 +21,7 @@ from replay_reader.checkpoint_parser import checkpoint_parser
 
 class ThreadManager:
 	def __init__(self, checkpoints):
-		self._alive_threads = set()
+		self._alive_threads = set([1])
 		self._checkpoints = checkpoints
 
 	def get_all_threads(self):
@@ -28,27 +29,29 @@ class ThreadManager:
 
 	def update_alive_threads(self):
 		print("I MADE IT TO update_alive_threads")
-		self._alive_threads = set(
+		self._alive_threads = self._currently_alive_threads()
+
+	def _currently_alive_threads(self):
+		return set(
 				map(lambda thread: thread.global_num, gdb.inferiors()[0].threads())
 		)
 
-	def _is_in_assembly_code(self):
-		return gdb.selected_frame().function() is None
+	def newly_alive_threads(self):
+		return self._currently_alive_threads().difference(self._alive_threads)
 
-	def _get_thread_out_of_assembly_code(self, thread):
-		current_thread = gdb.selected_thread().global_num
+	def get_thread_out_of_assembly_code(self, thread, thread_to_switch_back_to):
+		print("HELLO FROM get_thread_out_of_assembly_code")
+		print(f"GET {thread} OUT OF ASSEMBLY CODE")
 		gdb_execute(f"thread {thread}")
-		if self._is_in_assembly_code():
-			gdb_execute("finish")
-		gdb_execute(f"thread {current_thread}")
-
-	def get_all_threads_out_of_assembly_code(self):
-		print("I MADE IT TO get_all_threads_out_of_assembly_code")
-		print(self._alive_threads)
-		for thread in self._alive_threads:
-			self._get_thread_out_of_assembly_code(thread)
-		print("ALL THREADS SHOULD BE OUT OF ASSEMBLY CODE AT THIS POINT")
+		print(f"HELLO1")
 		gdb_execute("info threads")
+		# TODO instead of finish, maybe consider breaking here and see if that fixes
+		# the running thread problem. Might need to properly formulate what the
+		# program should do as well
+		gdb_execute("finish")
+		print(f"HELLO2")
+		gdb_execute(f"thread {thread_to_switch_back_to}")
+		print(f"HELLO3")
 
 class BreakpointManager:
 	def __init__(self, checkpoints):
@@ -57,7 +60,7 @@ class BreakpointManager:
 			checkpoint.update({"hit": False})
 
 	def set_next_breakpoint_for_thread(self, thread):
-		next_checkpoint = self._next_checkpoint_for(thread)["hits"]
+		next_checkpoint = self._next_checkpoint_for(thread)[CHECKPOINT_LOCATION_TAG]
 		next_breakpoint = gdb_breakpoint_at(next_checkpoint, temporary=True)
 		next_breakpoint.thread = thread
 
@@ -70,12 +73,19 @@ class BreakpointManager:
 		pprint(self.checkpoints)
 
 	def is_next_breakpoint(self, breakpoint):
-		return breakpoint.location == self.get_next_checkpoint()["hits"] and \
+		return breakpoint.location == \
+				self.get_next_checkpoint()[CHECKPOINT_LOCATION_TAG] and \
 				breakpoint.thread == self.get_next_checkpoint()["thread"]
+
+	def next_checkpoint_for_thread(self, thread):
+		assert len(self._checkpoints_for_thread(thread)) > 0, \
+				"Tried to get the next checkpoint of a thread for whom all the \
+						checkpoints have been hit"
+		return self._checkpoints_for_thread(thread)[0]
 
 	def _checkpoints_for_thread(self, thread):
 		return list(filter(lambda checkpoint: checkpoint["thread"] == thread and \
-				checkpoint["hit"] == False, self.checkpoints))
+				not checkpoint["hit"], self.checkpoints))
 	
 	def thread_should_finish(self, thread):
 		return len(self._checkpoints_for_thread(thread)) == 1
@@ -104,9 +114,6 @@ class ExecutionManager:
 			self.mark_next_checkpoint_as_hit()
 			self.run_to_next_checkpoint()
 
-	def get_all_threads_out_of_assembly_code(self):
-		return self._thread_manager.get_all_threads_out_of_assembly_code()
-
 	def is_next_breakpoint(self, breakpoint):
 		return self._breakpoint_manager.is_next_breakpoint(breakpoint)
 
@@ -121,7 +128,17 @@ class ExecutionManager:
 
 	def update_execution_state(self):
 		self.update_alive_threads()
-		self.get_all_threads_out_of_assembly_code()
+
+	def newly_alive_threads(self):
+		return self._thread_manager.newly_alive_threads()
+
+	def get_thread_out_of_assembly_code(self, thread, thread_to_switch_back_to):
+		self._thread_manager.get_thread_out_of_assembly_code(
+				thread, thread_to_switch_back_to
+		)
+
+	def next_checkpoint_for_thread(self, thread):
+		return self._breakpoint_manager.next_checkpoint_for_thread(thread)
 
 	def _continue_until_next_checkpoint(self, thread):
 		print("I MADE IT TO continue_until_next_checkpoint")
@@ -130,6 +147,7 @@ class ExecutionManager:
 
 	def _continue_until_next_checkpoint_or_end(self, thread):
 		print(f"I MADE IT TO continue_until_next_checkpoint_or_end: {thread}")
+		gdb_execute("info threads")
 		if self._breakpoint_manager.thread_should_finish(thread):
 			self._continue_until_end(thread)
 			return
@@ -176,8 +194,26 @@ class ThreadCreationListener:
 	def __call__(self, event):
 		print(f"CREATED THREAD {event.inferior_thread}")
 		write_to_log("\"Hit start routine of new thread\"")
-		gdb_execute("info threads")
+		assert len(self._execution_manager.newly_alive_threads()) == 1, \
+				"More than one newly created thread detected by ThreadCreationListener"
+		creator_thread = event.inferior_thread.num
+		newly_created_thread = next(iter(
+				self._execution_manager.newly_alive_threads()
+		))
+		# At this point neither the creator thread or created thread checkpoints
+		# have been hit
+		breakpoint = gdb_breakpoint_at(
+				self._execution_manager.next_checkpoint_for_thread(
+						newly_created_thread
+				)[CHECKPOINT_LOCATION_TAG],
+				temporary=True
+		)
+		gdb_execute(f"thread {creator_thread}")
+		gdb_execute("continue")
+
+	def _get_thread_to_start_routine(self, thread):
 		self._execution_manager.mark_next_checkpoint_as_hit()
+		pprint(self._execution_manager._thread_manager._checkpoints)
 		self._execution_manager.run_to_next_checkpoint()
 
 def pause_target_at_beginning():
@@ -197,15 +233,21 @@ def gdb_execute(instruction):
 	gdb.execute(instruction)
 
 def gdb_breakpoint_at(location, temporary=False):
+	print(f"GDB BREAKPOINT AT {location}, TEMPORARY={temporary}")
 	breakpoint_prefix = ""
 	if temporary:
 		breakpoint_prefix = "t"
 	write_to_log(f"{breakpoint_prefix}b {location}")
 	return gdb.Breakpoint(location, temporary=temporary)
 
+def configure_gdb_to_run_as_a_script():
+	gdb_execute("set confirm off")
+	gdb_execute("set pagination off")
+
 def main():
 	reset_log()
 
+	configure_gdb_to_run_as_a_script()
 	pause_target_at_beginning()
 
 	parser = checkpoint_parser("./checkpoints.json")
@@ -217,6 +259,7 @@ def main():
 	gdb.events.stop.connect(BreakListener(execution_manager))
 	gdb.events.new_thread.connect(ThreadCreationListener(execution_manager))
 	execution_manager.run_to_next_checkpoint()
+	gdb_execute("quit")
 
 if __name__ == "__main__":
 	main()

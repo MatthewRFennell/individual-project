@@ -8,11 +8,15 @@ START_ROUTINE_TAG = "thread_start_routines"
 THREAD_ID_TAG = "thread"
 CHECKPOINT_LOCATION_TAG = "hits"
 CHECKPOINT_ID_TAG = "id"
+CHECKPOINT_ACTION_TAG = "action"
+CHECKPOINT_ACTION_CREATOR_THREAD_TAG = "creator_thread"
+CHECKPOINT_ACTION_CREATED_THREAD_TAG = "created_thread"
+CHECKPOINT_ACTION_UNTRACKED_TAG = ""
 MAIN_THREAD_ID = 1
 
 class ThreadCreationListener:
 	def __init__(self):
-		self._created_threads = set([1])
+		self._created_threads = set([MAIN_THREAD_ID])
 		self._is_constrained_execution = False
 		self._thread_creations = []
 
@@ -180,9 +184,11 @@ class CheckpointMatcher:
 		self._attempt_to_match()
 
 	def _handle_creator_thread(self, checkpoint):
+		checkpoint[CHECKPOINT_ACTION_TAG] = CHECKPOINT_ACTION_CREATOR_THREAD_TAG
 		self._unmatched_creator_thread_checkpoint_ids.append(checkpoint)
 
 	def _handle_created_thread(self, checkpoint):
+		checkpoint[CHECKPOINT_ACTION_TAG] = CHECKPOINT_ACTION_CREATED_THREAD_TAG
 		self._unmatched_created_thread_checkpoint_ids.append(checkpoint)
 		self._seen_threads.add(checkpoint[THREAD_ID_TAG])
 
@@ -284,6 +290,10 @@ def main():
 	for checkpoint in checkpoints:
 		checkpoint[CHECKPOINT_LOCATION_TAG] = \
 				"*" + checkpoint[CHECKPOINT_LOCATION_TAG]
+
+	for checkpoint in checkpoints:
+		if CHECKPOINT_ACTION_TAG not in checkpoint:
+			checkpoint[CHECKPOINT_ACTION_TAG] = CHECKPOINT_ACTION_UNTRACKED_TAG
 
 	with open(OUTPUT_FILE, "w+") as output_file:
 		json.dump(replay, output_file, indent=OUTPUT_FILE_INDENT_WIDTH)
