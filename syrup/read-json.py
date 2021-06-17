@@ -156,7 +156,7 @@ def main():
 		checkpoint_parser(CHECKPOINT_FILE_LOCATION).get_checkpoints()
 	)
 	connect_listeners(checkpoint_manager)
-	gdb_wrapper.enqueue_execute("run")
+	gdb_wrapper.enqueue_execute("continue")
 
 if __name__ == "__main__":
 	main()
