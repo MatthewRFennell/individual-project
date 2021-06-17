@@ -171,8 +171,56 @@ def continue_sut_second_pass(thread_creation_checkpoints):
 	gdb_wrapper.immediate_connect(gdb.events.stop, checkpoint_recorder)
 	thread_creation_listener = ThreadCreationListener()
 	gdb_wrapper.immediate_connect(gdb.events.new_thread, thread_creation_listener)
+	inferior_exit_listener = SecondPassInferiorExitListener(
+		checkpoint_recorder,
+		thread_creation_listener,
+		thread_creation_checkpoints
+	)
+	gdb_wrapper.immediate_connect(gdb.events.exited, inferior_exit_listener)
 	gdb_wrapper.immediate_execute("continue")
 
+class SecondPassInferiorExitListener:
+	def __init__(self, checkpoint_recorder, thread_creation_listener, thread_creation_checkpoints):
+		self._checkpoint_recorder = checkpoint_recorder
+		self._thread_creation_listener = thread_creation_listener
+		self._thread_creation_checkpoints = thread_creation_checkpoints
+
+	def __call__(self, _):
+		log("SecondPassInferiorExitListener has been called")
+		enqueue_finish_sut_second_pass(
+			self._checkpoint_recorder,
+			self._thread_creation_listener,
+			self._thread_creation_checkpoints
+		)
+		gdb_wrapper.immediate_disconnect(gdb.events.exited, self)
+
+def enqueue_finish_sut_second_pass(
+		checkpoint_recorder,
+		thread_creation_listener,
+		thread_creation_checkpoints):
+	gdb_wrapper.post_event(FinishSUTSecondPass(
+		checkpoint_recorder,
+		thread_creation_listener,
+		thread_creation_checkpoints
+	))
+
+class FinishSUTSecondPass:
+	def __init__(self, checkpoint_recorder, thread_creation_listener, thread_creation_checkpoints):
+		self._checkpoint_recorder = checkpoint_recorder
+		self._thread_creation_listener = thread_creation_listener
+		self._thread_creation_checkpoints = thread_creation_checkpoints
+
+	def __call__(self):
+		finish_sut_second_pass(
+			self._checkpoint_recorder,
+			self._thread_creation_listener,
+			self._thread_creation_checkpoints
+		)
+
+def finish_sut_second_pass(
+		checkpoint_recorder,
+		thread_creation_listener,
+		thread_creation_checkpoints):
 	replay = {}
 	checkpoint_matcher = CheckpointMatcher(
 			checkpoint_recorder.get_hit_checkpoints(),
