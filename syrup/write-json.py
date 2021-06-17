@@ -77,6 +77,7 @@ class SyscallRecorder:
 		self.checkpoints = set()
 
 	def __call__(self, event):
+		log("Hit SyscallRecorder")
 		self.checkpoints.add(hex(gdb.selected_frame().older().pc()))
 		gdb_wrapper.immediate_execute("continue")
 
@@ -128,10 +129,10 @@ def set_syscall_breakpoints(checkpoints):
 def get_thread_creation_checkpoints():
 	gdb_wrapper.immediate_execute("catch syscall clone")
 	syscall_recorder = SyscallRecorder()
-	gdb.events.stop.connect(syscall_recorder)
+	gdb_wrapper.immediate_connect(gdb.events.stop, syscall_recorder)
 	gdb_wrapper.immediate_execute("run")
 	gdb_wrapper.immediate_execute("delete")
-	gdb.events.stop.disconnect(syscall_recorder)
+	gdb_wrapper.immediate_disconnect(gdb.events.stop, syscall_recorder)
 	return syscall_recorder.checkpoints
 
 def set_thread_start_routine_breakpoints():
@@ -291,9 +292,9 @@ def main():
 	set_shared_variable_breakpoints()
 	set_thread_start_routine_breakpoints()
 	checkpoint_recorder = CheckpointRecorder(thread_creation_checkpoints)
-	gdb.events.stop.connect(checkpoint_recorder)
+	gdb_wrapper.immediate_connect(gdb.events.stop, checkpoint_recorder)
 	thread_creation_listener = ThreadCreationListener()
-	gdb.events.new_thread.connect(thread_creation_listener)
+	gdb_wrapper.immediate_connect(gdb.events.new_thread, thread_creation_listener)
 	gdb_wrapper.immediate_execute("continue")
 
 	replay = {}

@@ -85,6 +85,26 @@ def immediate_connect(event_registry, event_listener):
 def enqueue_connect(event_registry, event_listener):
 	post_event(Connection(event_registry, event_listener))
 
+# Disconnects
+class Disconnect:
+	def __init__(self, event_registry, event_listener):
+		self._event_registry = event_registry
+		self._event_listener = event_listener
+
+	def __call__(self):
+		log(f"Disconnecting {self._event_listener} from {self._event_registry}")
+		print_stack_depth()
+		self._event_registry.disconnect(self._event_listener)
+
+	def __str__(self):
+		return f"Disconnection of {self._event_listener} from {self._event_registry}"
+
+def immediate_disconnect(event_registry, event_listener):
+	Disconnect(event_registry, event_listener)()
+
+def enqueue_disconnect(event_registry, event_listener):
+	post_event(Disconnect(event_registry, event_listener))
+
 # Convenience functions
 def post_event(action):
 	log(f"Posting {action} to the event queue")
