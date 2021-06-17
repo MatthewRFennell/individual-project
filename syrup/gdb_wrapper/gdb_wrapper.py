@@ -5,26 +5,46 @@ from logger.logger import log
 
 # Breakpoints
 class Breakpoint:
-	def __init__(self, breakpoint_location, thread, is_temporary):
+	def __init__(self, breakpoint_location, thread, is_temporary, breakpoint_type, wp_class):
 		self._breakpoint_location = breakpoint_location
 		self._thread = thread
 		self._is_temporary = is_temporary
+		self._breakpoint_type = breakpoint_type
+		self._wp_class = wp_class
 
 	def __call__(self):
 		log(f"Creating a new breakpoint for thread {self._thread} at {self._breakpoint_location}")
 		print_stack_depth()
-		breakpoint = gdb.Breakpoint(self._breakpoint_location, temporary=self._is_temporary)
+		if self._breakpoint_type is None and self._wp_class is None:
+			breakpoint = gdb.Breakpoint(self._breakpoint_location, temporary=self._is_temporary)
+		else:
+			breakpoint = gdb.Breakpoint(
+				self._breakpoint_location,
+				self._breakpoint_type,
+				self._wp_class,
+				temporary=self._is_temporary
+			)
 		if self._thread is not None:
 			breakpoint.thread = self._thread
 
 	def __str__(self):
 		return f"Breakpoint for thread {self._thread} at {self._breakpoint_location}"
 
-def immediate_breakpoint_at(location, thread=None, is_temporary=False):
-	Breakpoint(location, thread, is_temporary)()
+def immediate_breakpoint_at(
+		location,
+		thread=None,
+		is_temporary=False,
+		breakpoint_type=None,
+		wp_class=None):
+	Breakpoint(location, thread, is_temporary, breakpoint_type, wp_class)()
 
-def enqueue_breakpoint_at(location, thread=None, is_temporary=False):
-	post_event(Breakpoint(location, thread, is_temporary))
+def enqueue_breakpoint_at(
+		location,
+		thread=None,
+		is_temporary=False,
+		breakpoint_type=None,
+		wp_class=None):
+	post_event(Breakpoint(location, thread, is_temporary, breakpoint_type, wp_class))
 
 # Instructions
 class Instruction:

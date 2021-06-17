@@ -1,8 +1,13 @@
 #!/bin/python3
+import sys
+CURRENT_DIRECTORY = "syrup"
+sys.path.append(CURRENT_DIRECTORY)
 
 import gdb
 import json
 from pprint import pprint
+from gdb_wrapper import gdb_wrapper
+from logger.logger import log
 
 START_ROUTINE_TAG = "thread_start_routines"
 THREAD_ID_TAG = "thread"
@@ -21,6 +26,7 @@ class ThreadCreationListener:
 		self._thread_creations = []
 
 	def __call__(self, event):
+		log("ThreadCreationListener was called")
 		newly_created_thread = self._newly_created_thread()
 		self._record_new_thread_creation(event.inferior_thread.num,
 				newly_created_thread)
@@ -39,12 +45,18 @@ class ThreadCreationListener:
 		})
 
 	def _run_thread_to_start_routine(self, thread):
-		gdb.execute("continue")
+		gdb_wrapper.immediate_execute("continue")
 
 	def _newly_created_thread(self):
-		alive_threads = set(map(lambda thread: thread.global_num,
-				gdb.inferiors()[0].threads()))
+		alive_threads = set(map(
+			lambda thread: thread.global_num,
+			gdb.inferiors()[0].threads()
+		))
+		log("alive_threads:")
+		pprint(alive_threads)
 		newly_created_threads = alive_threads.difference(self._created_threads)
+		log("newly_created_threads:")
+		pprint(newly_created_threads)
 		assert len(newly_created_threads) == 1, "More than one newly created thread"
 		return next(iter(newly_created_threads))
 
@@ -52,13 +64,13 @@ class ThreadCreationListener:
 		self._created_threads.add(thread_id)
 
 	def _constrain_execution_to_thread(self, thread_id):
-		gdb.execute("set scheduler-locking on")
-		gdb.execute(f"thread {thread_id}")
+		gdb_wrapper.immediate_execute("set scheduler-locking on")
+		gdb_wrapper.immediate_execute(f"thread {thread_id}")
 		self._is_constrained_execution = True
 
 	def _resume_unconstrained_execution(self):
 		self._is_constrained_execution = False
-		gdb.execute("set scheduler-locking off")
+		gdb_wrapper.immediate_execute("set scheduler-locking off")
 
 class SyscallRecorder:
 	def __init__(self):
@@ -66,7 +78,7 @@ class SyscallRecorder:
 
 	def __call__(self, event):
 		self.checkpoints.add(hex(gdb.selected_frame().older().pc()))
-		gdb.execute("continue")
+		gdb_wrapper.immediate_execute("continue")
 
 # This class records the order in which checkpoints are hit when the program
 # executes. A checkpoint is an assembly instruction which reads from or writes
@@ -79,7 +91,7 @@ class CheckpointRecorder:
 
 	def __call__(self, event):
 		self._record_hit_checkpoint()
-		gdb.execute("continue")
+		gdb_wrapper.immediate_execute("continue")
 
 	def _record_hit_checkpoint(self):
 		thread_id = gdb.selected_thread().num
@@ -103,29 +115,33 @@ class CheckpointRecorder:
 def set_shared_variable_breakpoints():
 	shared_variables = ["counter"]
 	for shared_variable in shared_variables:
-		gdb.Breakpoint(shared_variable, gdb.BP_WATCHPOINT, gdb.WP_ACCESS)
+		gdb_wrapper.immediate_breakpoint_at(
+			shared_variable,
+			breakpoint_type=gdb.BP_WATCHPOINT,
+			wp_class=gdb.WP_ACCESS
+		)
 
 def set_syscall_breakpoints(checkpoints):
 	for checkpoint in checkpoints:
-		gdb.execute(f"break *{checkpoint}")
+		gdb_wrapper.immediate_execute(f"break *{checkpoint}")
 
 def get_thread_creation_checkpoints():
-	gdb.execute("catch syscall clone")
+	gdb_wrapper.immediate_execute("catch syscall clone")
 	syscall_recorder = SyscallRecorder()
 	gdb.events.stop.connect(syscall_recorder)
-	gdb.execute("run")
-	gdb.execute("delete")
+	gdb_wrapper.immediate_execute("run")
+	gdb_wrapper.immediate_execute("delete")
 	gdb.events.stop.disconnect(syscall_recorder)
 	return syscall_recorder.checkpoints
 
 def set_thread_start_routine_breakpoints():
 	start_routines = ["increment"]
 	for start_routine in start_routines:
-		gdb.Breakpoint(start_routine)
+		gdb_wrapper.immediate_breakpoint_at(start_routine)
 
 def pause_target_at_start():
-	gdb.Breakpoint("main")
-	gdb.execute("run")
+	gdb_wrapper.immediate_breakpoint_at("main")
+	gdb_wrapper.immediate_execute("run")
 
 class CheckpointMatcher:
 	def __init__(self, checkpoints, thread_creations,
@@ -258,16 +274,18 @@ def get_start_routines():
 	return ["increment"]
 
 def configure_gdb_to_run_as_a_script():
-	gdb.execute("set pagination off")
-	gdb.execute("set confirm off")
+	gdb_wrapper.immediate_execute("set pagination off")
+	gdb_wrapper.immediate_execute("set confirm off")
 
 def main():
 	CHECKPOINT_TAG = "checkpoints"
 	OUTPUT_FILE = "./checkpoints.json"
 	OUTPUT_FILE_INDENT_WIDTH = 2
 
-	thread_creation_checkpoints = get_thread_creation_checkpoints()
 	configure_gdb_to_run_as_a_script()
+	log("First pass of program to find thread creation checkpoints")
+	thread_creation_checkpoints = get_thread_creation_checkpoints()
+	log("Pausing at the start")
 	pause_target_at_start()
 	set_syscall_breakpoints(thread_creation_checkpoints)
 	set_shared_variable_breakpoints()
@@ -276,7 +294,7 @@ def main():
 	gdb.events.stop.connect(checkpoint_recorder)
 	thread_creation_listener = ThreadCreationListener()
 	gdb.events.new_thread.connect(thread_creation_listener)
-	gdb.execute("continue")
+	gdb_wrapper.immediate_execute("continue")
 
 	replay = {}
 	checkpoint_matcher = CheckpointMatcher(
@@ -303,7 +321,7 @@ def main():
 	with open(OUTPUT_FILE, "w+") as output_file:
 		json.dump(replay, output_file, indent=OUTPUT_FILE_INDENT_WIDTH)
 
-	gdb.execute("quit")
+	gdb_wrapper.immediate_execute("quit")
 
 if __name__ == "__main__":
 	main()
