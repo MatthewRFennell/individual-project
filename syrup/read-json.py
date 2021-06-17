@@ -124,7 +124,6 @@ class BreakListener:
 		if self._checkpoint_manager.current_thread_should_finish():
 			log(f"Finishing current thread as all checkpoints have been hit")
 			gdb_wrapper.enqueue_execute("continue")
-			return
 		self._checkpoint_manager.switch_to_thread_for_next_checkpoint()
 		gdb_wrapper.enqueue_execute("continue")
 
