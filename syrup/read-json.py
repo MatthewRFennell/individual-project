@@ -41,11 +41,11 @@ class CheckpointManager:
 
 	def newly_created_thread(self):
 		newly_created_threads = self._currently_alive_threads().difference(self._alive_threads)
-		assert len(newly_created_threads) <= 1, "More than one thread created since last check"
-		return next(iter(newly_created_threads), None)
+		assert len(newly_created_threads) == 1, "More than one thread created since last check"
+		return next(iter(newly_created_threads))
 
-	def mark_next_checkpoint_as_hit(self):
-		next_checkpoint = self._next_checkpoint()
+	def mark_next_checkpoint_as_hit_for_thread(self, thread):
+		next_checkpoint = self._next_checkpoint_for_thread(thread)
 		next_checkpoint[CHECKPOINT_IS_HIT_TAG] = True
 		log(f"Marked {next_checkpoint} as hit")
 
@@ -60,9 +60,14 @@ class CheckpointManager:
 
 	def current_thread_should_finish(self):
 		log("Called current_thread_should_finish")
-		remaining_thread_checkpoints = len(self._checkpoints_left_for_thread(self._current_thread()))
+		remaining_thread_checkpoints = len(self._checkpoints_left_for_thread(self.current_thread()))
 		log(f"{remaining_thread_checkpoints} checkpoints left for current thread")
 		return remaining_thread_checkpoints == 0
+
+	def current_thread(self):
+		current_thread = gdb.selected_thread().global_num
+		log(f"Current thread: {current_thread}")
+		return current_thread
 
 	# Private methods
 	def _checkpoints_left_for_thread(self, thread):
@@ -73,13 +78,22 @@ class CheckpointManager:
 		))
 		return remaining_checkpoints
 
-	def _current_thread(self):
-		current_thread = gdb.selected_thread().global_num
-		log(f"Current thread: {current_thread}")
-		return current_thread
 
 	def _next_checkpoint(self):
-		return next(filter(lambda checkpoint: not checkpoint[CHECKPOINT_IS_HIT_TAG], self.checkpoints))
+		next_checkpoint = next(filter(
+			lambda checkpoint: not checkpoint[CHECKPOINT_IS_HIT_TAG], self.checkpoints
+		))
+		log("I want to hit this checkpoint next:")
+		pprint(next_checkpoint)
+		return next_checkpoint
+
+	def _next_checkpoint_for_thread(self, thread):
+		next_checkpoint = next(filter(
+			lambda checkpoint: not checkpoint[CHECKPOINT_IS_HIT_TAG] and \
+					checkpoint[CHECKPOINT_THREAD_TAG] == thread,
+			self.checkpoints
+		))
+		return next_checkpoint
 
 	def _currently_alive_threads(self):
 		return set(
@@ -87,13 +101,9 @@ class CheckpointManager:
 		)
 
 	def _breakpoints_for_thread(self, thread):
-		checkpoints_to_set = list(filter(
-			lambda checkpoint: checkpoint[CHECKPOINT_ACTION_TAG] != ACTION_CREATE_THREAD_TAG,
-			self._checkpoints_for_thread(thread)
-		))
 		return set(map(
 			lambda checkpoint: checkpoint[CHECKPOINT_LOCATION_TAG],
-			checkpoints_to_set
+			self._checkpoints_for_thread(thread)
 		))
 
 	def _checkpoints_for_thread(self, thread):
@@ -108,7 +118,9 @@ class BreakListener:
 
 	def __call__(self, event):
 		log("BreakListener hit!")
-		self._checkpoint_manager.mark_next_checkpoint_as_hit()
+		self._checkpoint_manager.mark_next_checkpoint_as_hit_for_thread(
+			self._checkpoint_manager.current_thread()
+		)
 		if self._checkpoint_manager.current_thread_should_finish():
 			log(f"Finishing current thread as all checkpoints have been hit")
 			gdb_wrapper.enqueue_execute("continue")
@@ -127,11 +139,7 @@ class ThreadCreationListener:
 		log(f"creator_thread: {creator_thread}, created_thread: {created_thread}")
 		self._checkpoint_manager.update_alive_threads()
 		self._checkpoint_manager.set_breakpoints_for_thread(created_thread)
-		if self._thread_has_been_created(created_thread):
-			self._checkpoint_manager.switch_to_thread_for_next_checkpoint()
-
-	def _thread_has_been_created(self, thread):
-		return thread is not None
+		self._checkpoint_manager.switch_to_thread_for_next_checkpoint()
 
 def setup_gdb():
 	configure_gdb_to_run_as_a_script()

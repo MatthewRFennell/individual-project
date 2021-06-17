@@ -6,7 +6,7 @@ from pprint import pprint
 
 START_ROUTINE_TAG = "thread_start_routines"
 THREAD_ID_TAG = "thread"
-CHECKPOINT_LOCATION_TAG = "hits"
+CHECKPOINT_LOCATION_TAG = "location"
 CHECKPOINT_ID_TAG = "id"
 CHECKPOINT_ACTION_TAG = "action"
 CHECKPOINT_ACTION_CREATOR_THREAD_TAG = "creator_thread"
@@ -257,12 +257,17 @@ class CheckpointMatcher:
 def get_start_routines():
 	return ["increment"]
 
+def configure_gdb_to_run_as_a_script():
+	gdb.execute("set pagination off")
+	gdb.execute("set confirm off")
+
 def main():
 	CHECKPOINT_TAG = "checkpoints"
 	OUTPUT_FILE = "./checkpoints.json"
 	OUTPUT_FILE_INDENT_WIDTH = 2
 
 	thread_creation_checkpoints = get_thread_creation_checkpoints()
+	configure_gdb_to_run_as_a_script()
 	pause_target_at_start()
 	set_syscall_breakpoints(thread_creation_checkpoints)
 	set_shared_variable_breakpoints()
@@ -297,6 +302,8 @@ def main():
 
 	with open(OUTPUT_FILE, "w+") as output_file:
 		json.dump(replay, output_file, indent=OUTPUT_FILE_INDENT_WIDTH)
+
+	gdb.execute("quit")
 
 if __name__ == "__main__":
 	main()
