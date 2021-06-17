@@ -18,6 +18,9 @@ CHECKPOINT_ACTION_CREATOR_THREAD_TAG = "creator_thread"
 CHECKPOINT_ACTION_CREATED_THREAD_TAG = "created_thread"
 CHECKPOINT_ACTION_UNTRACKED_TAG = ""
 MAIN_THREAD_ID = 1
+CHECKPOINT_TAG = "checkpoints"
+OUTPUT_FILE = "./checkpoints.json"
+OUTPUT_FILE_INDENT_WIDTH = 2
 
 class ThreadCreationListener:
 	def __init__(self):
@@ -45,7 +48,7 @@ class ThreadCreationListener:
 		})
 
 	def _run_thread_to_start_routine(self, thread):
-		gdb_wrapper.immediate_execute("continue")
+		gdb_wrapper.enqueue_execute("continue")
 
 	def _newly_created_thread(self):
 		alive_threads = set(map(
@@ -64,13 +67,13 @@ class ThreadCreationListener:
 		self._created_threads.add(thread_id)
 
 	def _constrain_execution_to_thread(self, thread_id):
-		gdb_wrapper.immediate_execute("set scheduler-locking on")
-		gdb_wrapper.immediate_execute(f"thread {thread_id}")
+		gdb_wrapper.enqueue_execute("set scheduler-locking on")
+		gdb_wrapper.enqueue_execute(f"thread {thread_id}")
 		self._is_constrained_execution = True
 
 	def _resume_unconstrained_execution(self):
 		self._is_constrained_execution = False
-		gdb_wrapper.immediate_execute("set scheduler-locking off")
+		gdb_wrapper.enqueue_execute("set scheduler-locking off")
 
 class SyscallRecorder:
 	def __init__(self):
@@ -79,7 +82,7 @@ class SyscallRecorder:
 	def __call__(self, event):
 		log("Hit SyscallRecorder")
 		self.checkpoints.add(hex(gdb.selected_frame().older().pc()))
-		gdb_wrapper.immediate_execute("continue")
+		gdb_wrapper.enqueue_execute("continue")
 
 # This class records the order in which checkpoints are hit when the program
 # executes. A checkpoint is an assembly instruction which reads from or writes
@@ -92,7 +95,7 @@ class CheckpointRecorder:
 
 	def __call__(self, event):
 		self._record_hit_checkpoint()
-		gdb_wrapper.immediate_execute("continue")
+		gdb_wrapper.enqueue_execute("continue")
 
 	def _record_hit_checkpoint(self):
 		thread_id = gdb.selected_thread().num
@@ -110,6 +113,92 @@ class CheckpointRecorder:
 	def get_hit_checkpoints(self):
 		return self.hit_checkpoints
 
+class InferiorExitListener:
+	def __init__(self, syscall_recorder):
+		self._syscall_recorder = syscall_recorder
+		self._inferior_has_already_exited = False
+
+	def __call__(self, _):
+		if not self._inferior_has_already_exited:
+			log("InferiorExitListener has been called")
+			self._inferior_has_already_exited = True
+			gdb_wrapper.enqueue_execute("delete")
+			gdb_wrapper.enqueue_disconnect(gdb.events.stop, self._syscall_recorder)
+			enqueue_run_sut_second_pass(self._syscall_recorder.checkpoints)
+
+class RunSUTSecondPass:
+	def __init__(self, thread_creation_checkpoints):
+		self._thread_creation_checkpoints = thread_creation_checkpoints
+
+	def __call__(self):
+		run_sut_second_pass(self._thread_creation_checkpoints)
+
+def enqueue_run_sut_second_pass(thread_creation_checkpoints):
+	gdb_wrapper.post_event(RunSUTSecondPass(thread_creation_checkpoints))
+
+class TargetPauseListener:
+	def __init__(self, thread_creation_checkpoints):
+		self._thread_creation_checkpoints = thread_creation_checkpoints
+
+	def __call__(self, _):
+		log("TargetPauseListener has been called")
+		enqueue_continue_sut_second_pass(self._thread_creation_checkpoints)
+		gdb_wrapper.immediate_disconnect(gdb.events.stop, self)
+
+def enqueue_continue_sut_second_pass(thread_creation_checkpoints):
+	gdb_wrapper.post_event(ContinueSUTSecondPass(thread_creation_checkpoints))
+
+class ContinueSUTSecondPass:
+	def __init__(self, thread_creation_checkpoints):
+		self._thread_creation_checkpoints = thread_creation_checkpoints
+
+	def __call__(self):
+		log("ContinueSUTSecondPass has been called")
+		continue_sut_second_pass(self._thread_creation_checkpoints)
+
+def run_sut_second_pass(thread_creation_checkpoints):
+	log(f"run_sut_second_pass wih thread_creation_checkpoints = {thread_creation_checkpoints}")
+	log("Pausing at the start")
+	target_pause_listener = TargetPauseListener(thread_creation_checkpoints)
+	gdb_wrapper.immediate_connect(gdb.events.stop, target_pause_listener)
+	pause_target_at_start()
+
+def continue_sut_second_pass(thread_creation_checkpoints):
+	set_syscall_breakpoints(thread_creation_checkpoints)
+	set_shared_variable_breakpoints()
+	set_thread_start_routine_breakpoints()
+	checkpoint_recorder = CheckpointRecorder(thread_creation_checkpoints)
+	gdb_wrapper.immediate_connect(gdb.events.stop, checkpoint_recorder)
+	thread_creation_listener = ThreadCreationListener()
+	gdb_wrapper.immediate_connect(gdb.events.new_thread, thread_creation_listener)
+	gdb_wrapper.immediate_execute("continue")
+
+	replay = {}
+	checkpoint_matcher = CheckpointMatcher(
+			checkpoint_recorder.get_hit_checkpoints(),
+			thread_creation_listener.get_thread_creations(),
+			thread_creation_checkpoints
+	)
+
+	checkpoints = checkpoint_matcher.checkpoints_with_correctly_ordered_thread_creations()
+	replay[CHECKPOINT_TAG] = checkpoints
+
+	start_routines = get_start_routines()
+	replay[START_ROUTINE_TAG] = start_routines
+
+	for checkpoint in checkpoints:
+		checkpoint[CHECKPOINT_LOCATION_TAG] = \
+				"*" + checkpoint[CHECKPOINT_LOCATION_TAG]
+
+	for checkpoint in checkpoints:
+		if CHECKPOINT_ACTION_TAG not in checkpoint:
+			checkpoint[CHECKPOINT_ACTION_TAG] = CHECKPOINT_ACTION_UNTRACKED_TAG
+
+	with open(OUTPUT_FILE, "w+") as output_file:
+		json.dump(replay, output_file, indent=OUTPUT_FILE_INDENT_WIDTH)
+
+	gdb_wrapper.enqueue_execute("quit")
+
 # We want the interleavings of threads with respect to shared variables to be
 # recorded. Therefore, we only need to record the ordering of writes and reads
 # to shared variables.
@@ -124,16 +213,15 @@ def set_shared_variable_breakpoints():
 
 def set_syscall_breakpoints(checkpoints):
 	for checkpoint in checkpoints:
-		gdb_wrapper.immediate_execute(f"break *{checkpoint}")
+		gdb_wrapper.immediate_breakpoint_at(f"*{checkpoint}")
 
 def get_thread_creation_checkpoints():
 	gdb_wrapper.immediate_execute("catch syscall clone")
 	syscall_recorder = SyscallRecorder()
 	gdb_wrapper.immediate_connect(gdb.events.stop, syscall_recorder)
+	exit_listener = InferiorExitListener(syscall_recorder)
+	gdb_wrapper.immediate_connect(gdb.events.exited, exit_listener)
 	gdb_wrapper.immediate_execute("run")
-	gdb_wrapper.immediate_execute("delete")
-	gdb_wrapper.immediate_disconnect(gdb.events.stop, syscall_recorder)
-	return syscall_recorder.checkpoints
 
 def set_thread_start_routine_breakpoints():
 	start_routines = ["increment"]
@@ -279,50 +367,9 @@ def configure_gdb_to_run_as_a_script():
 	gdb_wrapper.immediate_execute("set confirm off")
 
 def main():
-	CHECKPOINT_TAG = "checkpoints"
-	OUTPUT_FILE = "./checkpoints.json"
-	OUTPUT_FILE_INDENT_WIDTH = 2
-
 	configure_gdb_to_run_as_a_script()
 	log("First pass of program to find thread creation checkpoints")
 	thread_creation_checkpoints = get_thread_creation_checkpoints()
-	log("Pausing at the start")
-	pause_target_at_start()
-	set_syscall_breakpoints(thread_creation_checkpoints)
-	set_shared_variable_breakpoints()
-	set_thread_start_routine_breakpoints()
-	checkpoint_recorder = CheckpointRecorder(thread_creation_checkpoints)
-	gdb_wrapper.immediate_connect(gdb.events.stop, checkpoint_recorder)
-	thread_creation_listener = ThreadCreationListener()
-	gdb_wrapper.immediate_connect(gdb.events.new_thread, thread_creation_listener)
-	gdb_wrapper.immediate_execute("continue")
-
-	replay = {}
-	checkpoint_matcher = CheckpointMatcher(
-			checkpoint_recorder.get_hit_checkpoints(),
-			thread_creation_listener.get_thread_creations(),
-			thread_creation_checkpoints
-	)
-
-	checkpoints = \
-			checkpoint_matcher.checkpoints_with_correctly_ordered_thread_creations()
-	replay[CHECKPOINT_TAG] = checkpoints
-
-	start_routines = get_start_routines()
-	replay[START_ROUTINE_TAG] = start_routines
-
-	for checkpoint in checkpoints:
-		checkpoint[CHECKPOINT_LOCATION_TAG] = \
-				"*" + checkpoint[CHECKPOINT_LOCATION_TAG]
-
-	for checkpoint in checkpoints:
-		if CHECKPOINT_ACTION_TAG not in checkpoint:
-			checkpoint[CHECKPOINT_ACTION_TAG] = CHECKPOINT_ACTION_UNTRACKED_TAG
-
-	with open(OUTPUT_FILE, "w+") as output_file:
-		json.dump(replay, output_file, indent=OUTPUT_FILE_INDENT_WIDTH)
-
-	gdb_wrapper.immediate_execute("quit")
 
 if __name__ == "__main__":
 	main()

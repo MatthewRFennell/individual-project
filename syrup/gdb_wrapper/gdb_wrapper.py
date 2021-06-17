@@ -112,5 +112,6 @@ def post_event(action):
 	result = gdb.post_event(action)
 
 def print_stack_depth():
-	pass
-	#log(f"stack depth: {len(inspect.stack())}")
+	stack_depth = len(inspect.stack())
+	if stack_depth > 10:
+		log(f"stack depth: {len(inspect.stack())}")
