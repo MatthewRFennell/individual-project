@@ -1,5 +1,7 @@
 #!/bin/python3
 import gdb
+import inspect
+from logger.logger import log
 
 # Breakpoints
 class Breakpoint:
@@ -9,12 +11,16 @@ class Breakpoint:
 		self._is_temporary = is_temporary
 
 	def __call__(self):
-		print(f"Creating a new breakpoint for thread {self._thread} at {self._breakpoint_location}")
+		log(f"Creating a new breakpoint for thread {self._thread} at {self._breakpoint_location}")
+		print_stack_depth()
 		breakpoint = gdb.Breakpoint(self._breakpoint_location, temporary=self._is_temporary)
 		if self._thread is not None:
 			breakpoint.thread = self._thread
 
-def breakpoint_at(location, thread=None, is_temporary=False):
+	def __str__(self):
+		return f"Breakpoint for thread {self._thread} at {self._breakpoint_location}"
+
+def immediate_breakpoint_at(location, thread=None, is_temporary=False):
 	Breakpoint(location, thread, is_temporary)()
 
 def enqueue_breakpoint_at(location, thread=None, is_temporary=False):
@@ -26,10 +32,14 @@ class Instruction:
 		self._instruction = instruction
 
 	def __call__(self):
-		print(f"Executing {self._instruction}")
+		log(f"{self._instruction}")
+		print_stack_depth()
 		gdb.execute(self._instruction)
 
-def execute(instruction):
+	def __str__(self):
+		return f"{self._instruction}"
+
+def immediate_execute(instruction):
 	Instruction(instruction)()
 
 def enqueue_execute(instruction):
@@ -42,10 +52,14 @@ class Connection:
 		self._event_listener = event_listener
 
 	def __call__(self):
-		print(f"Connecting {self._event_listener} to {self._event_registry}")
+		log(f"Connecting {self._event_listener} to {self._event_registry}")
+		print_stack_depth()
 		self._event_registry.connect(self._event_listener)
 
-def connect(event_registry, event_listener):
+	def __str__(self):
+		return f"Connection of {self._event_listener} to {self._event_registry}"
+
+def immediate_connect(event_registry, event_listener):
 	Connection(event_registry, event_listener)()
 
 def enqueue_connect(event_registry, event_listener):
@@ -53,5 +67,10 @@ def enqueue_connect(event_registry, event_listener):
 
 # Convenience functions
 def post_event(action):
-	print(f"Posting {action} to the event queue")
+	log(f"Posting {action} to the event queue")
+	print_stack_depth()
 	result = gdb.post_event(action)
+
+def print_stack_depth():
+	pass
+	#log(f"stack depth: {len(inspect.stack())}")
