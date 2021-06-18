@@ -31,12 +31,11 @@ class ThreadCreationListener:
 	def __call__(self, event):
 		log("ThreadCreationListener was called")
 		newly_created_thread = self._newly_created_thread()
-		self._record_new_thread_creation(event.inferior_thread.num,
-				newly_created_thread)
+		self._record_new_thread_creation(event.inferior_thread.num, newly_created_thread)
 		self._handle_newly_created_thread(newly_created_thread)
-		self._constrain_execution_to_thread(newly_created_thread)
-		self._run_thread_to_start_routine(newly_created_thread)
-		self._resume_unconstrained_execution()
+		#self._constrain_execution_to_thread(newly_created_thread)
+		#self._run_thread_to_start_routine(newly_created_thread)
+		#self._resume_unconstrained_execution()
 
 	def get_thread_creations(self):
 		return self._thread_creations
@@ -100,10 +99,16 @@ class CheckpointRecorder:
 	def _record_hit_checkpoint(self):
 		thread_id = gdb.selected_thread().num
 		checkpoint_location = hex(gdb.selected_frame().pc())
+		log(f"Recording hit checkpoint at {checkpoint_location}")
+		if checkpoint_location == "0x5555555551bb":
+			log(f"Read by {thread_id} at {checkpoint_location}")
+		elif checkpoint_location == "0x5555555551c4":
+			log(f"Write by {thread_id} at {checkpoint_location}")
 		self._add_checkpoint(thread_id, checkpoint_location, self._checkpoint_id)
 		self._checkpoint_id += 1
 
 	def _add_checkpoint(self, thread_id, checkpoint_location, checkpoint_id):
+		log(f"Appending hit checkpoint {checkpoint_id} at {checkpoint_location} by thread {thread_id}")
 		self.hit_checkpoints.append({
 				CHECKPOINT_ID_TAG: checkpoint_id,
 				THREAD_ID_TAG: thread_id,
