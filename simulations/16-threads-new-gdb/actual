@@ -1,0 +1,1008 @@
+GNU gdb (GDB) 11.0.50.20210619-git
+Copyright (C) 2021 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from examples/counter-2-threads/a.out...
+syrup: set pagination off
+syrup: set confirm off
+syrup: First pass of program to find thread creation checkpoints
+syrup: catch syscall clone
+Catchpoint 1 (syscall 'clone' [56])
+syrup: Connecting <__main__.SyscallRecorder object at 0x7f14801a7d00> to <gdb.EventRegistry object at 0x7f1480323370>
+syrup: Connecting <__main__.InferiorExitListener object at 0x7f14800d0040> to <gdb.EventRegistry object at 0x7f14803233b0>
+syrup: run
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+[?2004h(gdb) syrup: continue
+[New Thread 0x7ffff7d90700 (LWP 242996)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff7d90700 (LWP 242996) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff758f700 (LWP 242997)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff758f700 (LWP 242997) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff6d8e700 (LWP 242998)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff6d8e700 (LWP 242998) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff658d700 (LWP 242999)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff658d700 (LWP 242999) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff5d8c700 (LWP 243000)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff5d8c700 (LWP 243000) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff558b700 (LWP 243001)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff558b700 (LWP 243001) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff4d8a700 (LWP 243002)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff4d8a700 (LWP 243002) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff4589700 (LWP 243003)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff4589700 (LWP 243003) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff3d88700 (LWP 243004)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff3d88700 (LWP 243004) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff3587700 (LWP 243005)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff3587700 (LWP 243005) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff2d86700 (LWP 243006)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff2d86700 (LWP 243006) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff2585700 (LWP 243007)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff2585700 (LWP 243007) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff1d84700 (LWP 243008)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff1d84700 (LWP 243008) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff1583700 (LWP 243009)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff1583700 (LWP 243009) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff0d82700 (LWP 243010)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff0d82700 (LWP 243010) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff0581700 (LWP 243011)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), 0x00007ffff7eb6285 in clone () from /lib/x86_64-linux-gnu/libc.so.6
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff0581700 (LWP 243011) exited]
+Counter value is 16
+[Inferior 1 (process 242992) exited normally]
+syrup: InferiorExitListener has been called
+syrup: Posting delete to the event queue
+syrup: Posting Disconnection of <__main__.SyscallRecorder object at 0x7f14801a7d00> from <gdb.EventRegistry object at 0x7f1480323370> to the event queue
+syrup: Posting <__main__.RunSUTSecondPass object at 0x7f14800d05b0> to the event queue
+syrup: delete
+syrup: Disconnecting <__main__.SyscallRecorder object at 0x7f14801a7d00> from <gdb.EventRegistry object at 0x7f1480323370>
+syrup: run_sut_second_pass wih thread_creation_checkpoints = {'0x7ffff7f8e2ec'}
+syrup: Pausing at the start
+syrup: Connecting <__main__.TargetPauseListener object at 0x7f1480198e80> to <gdb.EventRegistry object at 0x7f1480323370>
+syrup: Creating a new breakpoint for thread None at main
+Breakpoint 2 at 0x5555555551d6: file counter-2-threads.c, line 13.
+syrup: run
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 2, main () at counter-2-threads.c:13
+13	int main(void) {
+syrup: TargetPauseListener has been called
+syrup: Posting <__main__.ContinueSUTSecondPass object at 0x7f14800d05b0> to the event queue
+syrup: Disconnecting <__main__.TargetPauseListener object at 0x7f1480198e80> from <gdb.EventRegistry object at 0x7f1480323370>
+syrup: ContinueSUTSecondPass has been called
+syrup: Creating a new breakpoint for thread None at *0x7ffff7f8e2ec
+Breakpoint 3 at 0x7ffff7f8e2ec
+syrup: Creating a new breakpoint for thread None at counter
+Hardware access (read/write) watchpoint 4: counter
+syrup: Creating a new breakpoint for thread None at increment
+Breakpoint 5 at 0x5555555551b5: file counter-2-threads.c, line 10.
+syrup: Connecting <__main__.CheckpointRecorder object at 0x7f148020df70> to <gdb.EventRegistry object at 0x7f1480323370>
+syrup: Connecting <__main__.ThreadCreationListener object at 0x7f14801989d0> to <gdb.EventRegistry object at 0x7f1480323450>
+syrup: Connecting <__main__.SecondPassInferiorExitListener object at 0x7f148015c760> to <gdb.EventRegistry object at 0x7f14803233b0>
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 2}
+syrup: newly_created_threads:
+{2}
+[New Thread 0x7ffff7d90700 (LWP 243013)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 0 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d90700 (LWP 243013)]
+
+Thread 2 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 1 at 0x5555555551b5 by thread 2
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 2, 3}
+syrup: newly_created_threads:
+{3}
+[New Thread 0x7ffff758f700 (LWP 243014)]
+
+Thread 2 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 0
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 2 at 0x5555555551bb
+syrup: Appending hit checkpoint 2 at 0x5555555551bb by thread 2
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff758f700 (LWP 243014)]
+
+Thread 3 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 3 at 0x5555555551b5 by thread 3
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d90700 (LWP 243013)]
+
+Thread 2 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 0
+New value = 1
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 2 at 0x5555555551c4
+syrup: Appending hit checkpoint 4 at 0x5555555551c4 by thread 2
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff7d90700 (LWP 243013) exited]
+[Switching to Thread 0x7ffff758f700 (LWP 243014)]
+
+Thread 3 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 1
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 3 at 0x5555555551bb
+syrup: Appending hit checkpoint 5 at 0x5555555551bb by thread 3
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 6 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff758f700 (LWP 243014)]
+
+Thread 3 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 1
+New value = 2
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 3 at 0x5555555551c4
+syrup: Appending hit checkpoint 7 at 0x5555555551c4 by thread 3
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 3, 4}
+syrup: newly_created_threads:
+{4}
+[New Thread 0x7ffff6d8e700 (LWP 243015)]
+[Thread 0x7ffff758f700 (LWP 243014) exited]
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 8 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff6d8e700 (LWP 243015)]
+
+Thread 4 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 9 at 0x5555555551b5 by thread 4
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 4, 5}
+syrup: newly_created_threads:
+{5}
+[New Thread 0x7ffff658d700 (LWP 243016)]
+
+Thread 4 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 2
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 4 at 0x5555555551bb
+syrup: Appending hit checkpoint 10 at 0x5555555551bb by thread 4
+syrup: Posting continue to the event queue
+syrup: continue
+
+Thread 4 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 2
+New value = 3
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 4 at 0x5555555551c4
+syrup: Appending hit checkpoint 11 at 0x5555555551c4 by thread 4
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff6d8e700 (LWP 243015) exited]
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 12 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff658d700 (LWP 243016)]
+
+Thread 5 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 13 at 0x5555555551b5 by thread 5
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 5, 6}
+syrup: newly_created_threads:
+{6}
+[New Thread 0x7ffff5d8c700 (LWP 243017)]
+
+Thread 5 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 3
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 5 at 0x5555555551bb
+syrup: Appending hit checkpoint 14 at 0x5555555551bb by thread 5
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff5d8c700 (LWP 243017)]
+
+Thread 6 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 15 at 0x5555555551b5 by thread 6
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 16 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff5d8c700 (LWP 243017)]
+
+Thread 6 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 3
+New value = 4
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 6 at 0x5555555551bb
+syrup: Appending hit checkpoint 17 at 0x5555555551bb by thread 6
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff658d700 (LWP 243016)]
+
+Thread 5 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 4
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 5 at 0x5555555551c4
+syrup: Appending hit checkpoint 18 at 0x5555555551c4 by thread 5
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 5, 6, 7}
+syrup: newly_created_threads:
+{7}
+[New Thread 0x7ffff558b700 (LWP 243018)]
+[Thread 0x7ffff658d700 (LWP 243016) exited]
+[Switching to Thread 0x7ffff5d8c700 (LWP 243017)]
+
+Thread 6 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 4
+New value = 5
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 6 at 0x5555555551c4
+syrup: Appending hit checkpoint 19 at 0x5555555551c4 by thread 6
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff5d8c700 (LWP 243017) exited]
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 20 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff558b700 (LWP 243018)]
+
+Thread 7 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 21 at 0x5555555551b5 by thread 7
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{8, 1, 7}
+syrup: newly_created_threads:
+{8}
+[New Thread 0x7ffff4d8a700 (LWP 243019)]
+
+Thread 7 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 5
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 7 at 0x5555555551bb
+syrup: Appending hit checkpoint 22 at 0x5555555551bb by thread 7
+syrup: Posting continue to the event queue
+syrup: continue
+
+Thread 7 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 5
+New value = 6
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 7 at 0x5555555551c4
+syrup: Appending hit checkpoint 23 at 0x5555555551c4 by thread 7
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff558b700 (LWP 243018) exited]
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 24 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff4d8a700 (LWP 243019)]
+
+Thread 8 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 25 at 0x5555555551b5 by thread 8
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{8, 9, 1}
+syrup: newly_created_threads:
+{9}
+[New Thread 0x7ffff4589700 (LWP 243020)]
+
+Thread 8 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 6
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 8 at 0x5555555551bb
+syrup: Appending hit checkpoint 26 at 0x5555555551bb by thread 8
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 27 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff4589700 (LWP 243020)]
+
+Thread 9 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 28 at 0x5555555551b5 by thread 9
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff4d8a700 (LWP 243019)]
+
+Thread 8 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 6
+New value = 7
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 8 at 0x5555555551c4
+syrup: Appending hit checkpoint 29 at 0x5555555551c4 by thread 8
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{8, 9, 10, 1}
+syrup: newly_created_threads:
+{10}
+[New Thread 0x7ffff3d88700 (LWP 243021)]
+[Thread 0x7ffff4d8a700 (LWP 243019) exited]
+[Switching to Thread 0x7ffff4589700 (LWP 243020)]
+
+Thread 9 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 7
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 9 at 0x5555555551bb
+syrup: Appending hit checkpoint 30 at 0x5555555551bb by thread 9
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 31 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff4589700 (LWP 243020)]
+
+Thread 9 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 7
+New value = 8
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 9 at 0x5555555551c4
+syrup: Appending hit checkpoint 32 at 0x5555555551c4 by thread 9
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff3d88700 (LWP 243021)]
+
+Thread 10 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 33 at 0x5555555551b5 by thread 10
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{9, 10, 11, 1}
+syrup: newly_created_threads:
+{11}
+[New Thread 0x7ffff3587700 (LWP 243022)]
+[Thread 0x7ffff4589700 (LWP 243020) exited]
+
+Thread 10 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 8
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 10 at 0x5555555551bb
+syrup: Appending hit checkpoint 34 at 0x5555555551bb by thread 10
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff3587700 (LWP 243022)]
+
+Thread 11 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 35 at 0x5555555551b5 by thread 11
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 36 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff3d88700 (LWP 243021)]
+
+Thread 10 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 8
+New value = 9
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 10 at 0x5555555551c4
+syrup: Appending hit checkpoint 37 at 0x5555555551c4 by thread 10
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff3587700 (LWP 243022)]
+
+Thread 11 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 9
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 11 at 0x5555555551bb
+syrup: Appending hit checkpoint 38 at 0x5555555551bb by thread 11
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff3d88700 (LWP 243021) exited]
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 11, 12}
+syrup: newly_created_threads:
+{12}
+[New Thread 0x7ffff2d86700 (LWP 243023)]
+
+Thread 11 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 9
+New value = 10
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 11 at 0x5555555551c4
+syrup: Appending hit checkpoint 39 at 0x5555555551c4 by thread 11
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff3587700 (LWP 243022) exited]
+[Switching to Thread 0x7ffff2d86700 (LWP 243023)]
+
+Thread 12 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 40 at 0x5555555551b5 by thread 12
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 41 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff2d86700 (LWP 243023)]
+
+Thread 12 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 10
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 12 at 0x5555555551bb
+syrup: Appending hit checkpoint 42 at 0x5555555551bb by thread 12
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 12, 13}
+syrup: newly_created_threads:
+{13}
+[New Thread 0x7ffff2585700 (LWP 243024)]
+
+Thread 12 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 10
+New value = 11
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 12 at 0x5555555551c4
+syrup: Appending hit checkpoint 43 at 0x5555555551c4 by thread 12
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff2d86700 (LWP 243023) exited]
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 44 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff2585700 (LWP 243024)]
+
+Thread 13 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 45 at 0x5555555551b5 by thread 13
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 13, 14}
+syrup: newly_created_threads:
+{14}
+[New Thread 0x7ffff1d84700 (LWP 243025)]
+
+Thread 13 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 11
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 13 at 0x5555555551bb
+syrup: Appending hit checkpoint 46 at 0x5555555551bb by thread 13
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff1d84700 (LWP 243025)]
+
+Thread 14 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 47 at 0x5555555551b5 by thread 14
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 48 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff1d84700 (LWP 243025)]
+
+Thread 14 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 11
+New value = 12
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 14 at 0x5555555551bb
+syrup: Appending hit checkpoint 49 at 0x5555555551bb by thread 14
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff2585700 (LWP 243024)]
+
+Thread 13 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 12
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 13 at 0x5555555551c4
+syrup: Appending hit checkpoint 50 at 0x5555555551c4 by thread 13
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 13, 14, 15}
+syrup: newly_created_threads:
+{15}
+[New Thread 0x7ffff1583700 (LWP 243026)]
+[Thread 0x7ffff2585700 (LWP 243024) exited]
+[Switching to Thread 0x7ffff1d84700 (LWP 243025)]
+
+Thread 14 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 12
+New value = 13
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 14 at 0x5555555551c4
+syrup: Appending hit checkpoint 51 at 0x5555555551c4 by thread 14
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff1d84700 (LWP 243025) exited]
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 52 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff1583700 (LWP 243026)]
+
+Thread 15 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 53 at 0x5555555551b5 by thread 15
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{16, 1, 15}
+syrup: newly_created_threads:
+{16}
+[New Thread 0x7ffff0d82700 (LWP 243027)]
+
+Thread 15 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 13
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 15 at 0x5555555551bb
+syrup: Appending hit checkpoint 54 at 0x5555555551bb by thread 15
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 55 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff0d82700 (LWP 243027)]
+
+Thread 16 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 56 at 0x5555555551b5 by thread 16
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff1583700 (LWP 243026)]
+
+Thread 15 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 13
+New value = 14
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 15 at 0x5555555551c4
+syrup: Appending hit checkpoint 57 at 0x5555555551c4 by thread 15
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{16, 17, 1, 15}
+syrup: newly_created_threads:
+{17}
+[New Thread 0x7ffff0581700 (LWP 243028)]
+[Thread 0x7ffff1583700 (LWP 243026) exited]
+[Switching to Thread 0x7ffff0d82700 (LWP 243027)]
+
+Thread 16 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 14
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 16 at 0x5555555551bb
+syrup: Appending hit checkpoint 58 at 0x5555555551bb by thread 16
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+syrup: Recording hit checkpoint at 0x7ffff7f8e2ec
+syrup: Appending hit checkpoint 59 at 0x7ffff7f8e2ec by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff0581700 (LWP 243028)]
+
+Thread 17 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551b5
+syrup: Appending hit checkpoint 60 at 0x5555555551b5 by thread 17
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff0d82700 (LWP 243027)]
+
+Thread 16 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 14
+New value = 15
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 16 at 0x5555555551c4
+syrup: Appending hit checkpoint 61 at 0x5555555551c4 by thread 16
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff0581700 (LWP 243028)]
+
+Thread 17 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 15
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Recording hit checkpoint at 0x5555555551bb
+syrup: Read by 17 at 0x5555555551bb
+syrup: Appending hit checkpoint 62 at 0x5555555551bb by thread 17
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff0d82700 (LWP 243027) exited]
+
+Thread 17 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 15
+New value = 16
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Recording hit checkpoint at 0x5555555551c4
+syrup: Write by 17 at 0x5555555551c4
+syrup: Appending hit checkpoint 63 at 0x5555555551c4 by thread 17
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff0581700 (LWP 243028) exited]
+[Switching to Thread 0x7ffff7d91740 (LWP 243012)]
+
+Thread 1 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 16
+0x00005555555552a1 in main () at counter-2-threads.c:27
+27		printf("Counter value is %d\n", counter);
+syrup: Recording hit checkpoint at 0x5555555552a1
+syrup: Appending hit checkpoint 64 at 0x5555555552a1 by thread 1
+syrup: Posting continue to the event queue
+syrup: continue
+Counter value is 16
+[Inferior 1 (process 243012) exited normally]
+syrup: SecondPassInferiorExitListener has been called
+syrup: Posting <__main__.FinishSUTSecondPass object at 0x7f14800d00a0> to the event queue
+syrup: Disconnecting <__main__.SecondPassInferiorExitListener object at 0x7f148015c760> from <gdb.EventRegistry object at 0x7f14803233b0>
+syrup: Posting quit to the event queue
+syrup: quit
+[?2004l
