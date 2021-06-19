@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#define THREAD_COUNT 4
+#define THREAD_COUNT 8
 // @Syrup: shared-variable
 int counter = 0;
 
 // @Syrup: entry-point
 void *increment(void *arguments) {
-	int old_value = counter;
-	int new_value = old_value + 1;
-	counter = new_value;
+	counter++;
 }
 
 int main(void) {

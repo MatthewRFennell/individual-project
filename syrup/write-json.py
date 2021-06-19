@@ -94,6 +94,7 @@ class CheckpointRecorder:
 
 	def __call__(self, event):
 		self._record_hit_checkpoint()
+		gdb_wrapper.enqueue_execute("info registers eax")
 		gdb_wrapper.enqueue_execute("continue")
 
 	def _record_hit_checkpoint(self):
