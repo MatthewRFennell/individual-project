@@ -7,7 +7,9 @@ int counter = 0;
 
 // @Syrup: entry-point
 void *increment(void *arguments) {
-	counter++;
+	int old_value = counter;
+	int new_value = old_value + 1;
+	counter = new_value;
 }
 
 int main(void) {

@@ -258,15 +258,12 @@ def finish_sut_second_pass(
 # to shared variables.
 def set_shared_variable_breakpoints():
 	shared_variables = ["counter"]
-	# Watchpoint behaviour has gone horribly wrong. Let's set breakpoints instead!
-	#for shared_variable in shared_variables:
-	#	gdb_wrapper.immediate_breakpoint_at(
-	#		shared_variable,
-	#		breakpoint_type=gdb.BP_WATCHPOINT,
-	#		wp_class=gdb.WP_ACCESS
-	#	)
-	gdb_wrapper.immediate_breakpoint_at("*0x5555555551bb")
-	gdb_wrapper.immediate_breakpoint_at("*0x5555555551c4")
+	for shared_variable in shared_variables:
+		gdb_wrapper.immediate_breakpoint_at(
+			shared_variable,
+			breakpoint_type=gdb.BP_WATCHPOINT,
+			wp_class=gdb.WP_ACCESS
+		)
 
 def set_syscall_breakpoints(checkpoints):
 	for checkpoint in checkpoints:
