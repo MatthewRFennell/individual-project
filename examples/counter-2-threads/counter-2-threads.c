@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#define THREAD_COUNT 500
+#define THREAD_COUNT 4
 // @Syrup: shared-variable
 int counter = 0;
 

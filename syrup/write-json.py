@@ -99,6 +99,7 @@ class CheckpointRecorder:
 	def _record_hit_checkpoint(self):
 		thread_id = gdb.selected_thread().num
 		checkpoint_location = hex(gdb.selected_frame().pc())
+		gdb_wrapper.immediate_execute("p counter")
 		log(f"Recording hit checkpoint at {checkpoint_location}")
 		if checkpoint_location == "0x5555555551bb":
 			log(f"Read by {thread_id} at {checkpoint_location}")
