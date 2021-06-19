@@ -94,18 +94,23 @@ class CheckpointRecorder:
 
 	def __call__(self, event):
 		self._record_hit_checkpoint()
-		gdb_wrapper.enqueue_execute("info registers eax")
+		self._print_eax_of_each_thread()
 		gdb_wrapper.enqueue_execute("continue")
+
+	def _print_eax_of_each_thread(self):
+		log("PRINTING THE EAX OF EACH THREAD")
+		current_thread = gdb.selected_thread().global_num
+		for thread in gdb.inferiors()[0].threads():
+			thread_id = thread.global_num
+			log(f"WE ARE IN THREAD #{thread_id}")
+			gdb_wrapper.immediate_execute(f"thread {thread_id}")
+			log("EAX VALUE iS")
+			gdb_wrapper.immediate_execute("info registers eax")
+		gdb_wrapper.immediate_execute(f"thread {current_thread}")
 
 	def _record_hit_checkpoint(self):
 		thread_id = gdb.selected_thread().num
 		checkpoint_location = hex(gdb.selected_frame().pc())
-		gdb_wrapper.immediate_execute("p counter")
-		log(f"Recording hit checkpoint at {checkpoint_location}")
-		if checkpoint_location == "0x5555555551bb":
-			log(f"Read by {thread_id} at {checkpoint_location}")
-		elif checkpoint_location == "0x5555555551c4":
-			log(f"Write by {thread_id} at {checkpoint_location}")
 		self._add_checkpoint(thread_id, checkpoint_location, self._checkpoint_id)
 		self._checkpoint_id += 1
 

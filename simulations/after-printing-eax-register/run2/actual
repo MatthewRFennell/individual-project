@@ -1,0 +1,1455 @@
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from examples/counter-2-threads/a.out...
+.gdbinit:3: Error in sourced command file:
+Cannot enable the TUI when output is not a terminal
+syrup: set pagination off
+syrup: set confirm off
+syrup: First pass of program to find thread creation checkpoints
+syrup: catch syscall clone
+Catchpoint 1 (syscall 'clone' [56])
+syrup: Connecting <__main__.SyscallRecorder object at 0x7f0a9797b6d0> to <gdb.EventRegistry object at 0x7f0a97a96370>
+syrup: Connecting <__main__.InferiorExitListener object at 0x7f0a9797beb0> to <gdb.EventRegistry object at 0x7f0a97a963b0>
+syrup: run
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Catchpoint 1 (call to syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	../sysdeps/unix/sysv/linux/x86_64/clone.S: No such file or directory.
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+(gdb) syrup: continue
+[New Thread 0x7ffff7d90700 (LWP 311789)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff7d90700 (LWP 311789) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff758f700 (LWP 311790)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff758f700 (LWP 311790) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff6d8e700 (LWP 311791)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff6d8e700 (LWP 311791) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff658d700 (LWP 311792)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff658d700 (LWP 311792) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff5d8c700 (LWP 311793)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff5d8c700 (LWP 311793) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff558b700 (LWP 311794)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff558b700 (LWP 311794) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff4d8a700 (LWP 311795)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff4d8a700 (LWP 311795) exited]
+
+Thread 1 "a.out" hit Catchpoint 1 (call to syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[New Thread 0x7ffff4589700 (LWP 311796)]
+
+Thread 1 "a.out" hit Catchpoint 1 (returned from syscall clone), clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	in ../sysdeps/unix/sysv/linux/x86_64/clone.S
+syrup: Hit SyscallRecorder
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff4589700 (LWP 311796) exited]
+Counter value is 8
+[Inferior 1 (process 311785) exited normally]
+syrup: InferiorExitListener has been called
+syrup: Posting delete to the event queue
+syrup: Posting Disconnection of <__main__.SyscallRecorder object at 0x7f0a9797b6d0> from <gdb.EventRegistry object at 0x7f0a97a96370> to the event queue
+syrup: Posting <__main__.RunSUTSecondPass object at 0x7f0a9797ba90> to the event queue
+syrup: delete
+syrup: Disconnecting <__main__.SyscallRecorder object at 0x7f0a9797b6d0> from <gdb.EventRegistry object at 0x7f0a97a96370>
+syrup: run_sut_second_pass wih thread_creation_checkpoints = {'0x7ffff7f8e2ec'}
+syrup: Pausing at the start
+syrup: Connecting <__main__.TargetPauseListener object at 0x7f0a978c7790> to <gdb.EventRegistry object at 0x7f0a97a96370>
+syrup: Creating a new breakpoint for thread None at main
+Breakpoint 2 at 0x5555555551c7: file counter-2-threads.c, line 13.
+syrup: run
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 2, main () at counter-2-threads.c:13
+13	int main(void) {
+syrup: TargetPauseListener has been called
+syrup: Posting <__main__.ContinueSUTSecondPass object at 0x7f0a9797ba90> to the event queue
+syrup: Disconnecting <__main__.TargetPauseListener object at 0x7f0a978c7790> from <gdb.EventRegistry object at 0x7f0a97a96370>
+syrup: ContinueSUTSecondPass has been called
+syrup: Creating a new breakpoint for thread None at *0x7ffff7f8e2ec
+Breakpoint 3 at 0x7ffff7f8e2ec: file ../sysdeps/unix/sysv/linux/createthread.c, line 101.
+syrup: Creating a new breakpoint for thread None at counter
+Hardware access (read/write) watchpoint 4: counter
+syrup: Creating a new breakpoint for thread None at increment
+Breakpoint 5 at 0x5555555551a9: file counter-2-threads.c, line 9.
+syrup: Connecting <__main__.CheckpointRecorder object at 0x7f0a978c3a00> to <gdb.EventRegistry object at 0x7f0a97a96370>
+syrup: Connecting <__main__.ThreadCreationListener object at 0x7f0a978c76a0> to <gdb.EventRegistry object at 0x7f0a97a96450>
+syrup: Connecting <__main__.SecondPassInferiorExitListener object at 0x7f0a97949be0> to <gdb.EventRegistry object at 0x7f0a97a963b0>
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 2}
+syrup: newly_created_threads:
+{2}
+[New Thread 0x7ffff7d90700 (LWP 311798)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff7d90700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff7d8ffc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: Appending hit checkpoint 0 at 0x7ffff7f8e2ec by thread 1
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #2
+syrup: thread 2
+[Switching to thread 2 (Thread 0x7ffff7d90700 (LWP 311798))]
+#0  increment (arguments=0x7ffff7fa9000) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf7d90700          -136771840
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff7d90700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff7d8ffc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f6             311798
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff7d90700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff7d8ffc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	in ../sysdeps/unix/sysv/linux/createthread.c
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d90700 (LWP 311798)]
+
+Thread 2 "a.out" hit Breakpoint 5, increment (arguments=0x7ffff7fa9000) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Appending hit checkpoint 1 at 0x5555555551a9 by thread 2
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #2
+syrup: thread 2
+[Switching to thread 2 (Thread 0x7ffff7d90700 (LWP 311798))]
+#0  increment (arguments=0x7ffff7fa9000) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf7d90700          -136771840
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ed in create_thread (pd=pd@entry=0x7ffff7d90700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff7d8ffc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f6             311798
+syrup: thread 2
+[Switching to thread 2 (Thread 0x7ffff7d90700 (LWP 311798))]
+#0  increment (arguments=0x7ffff7fa9000) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 2, 3}
+syrup: newly_created_threads:
+{3}
+[New Thread 0x7ffff758f700 (LWP 311799)]
+
+Thread 2 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 0
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Appending hit checkpoint 2 at 0x5555555551bb by thread 2
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #3
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf758f700          -145164544
+syrup: WE ARE IN THREAD #2
+syrup: thread 2
+[Switching to thread 2 (Thread 0x7ffff7d90700 (LWP 311798))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x0                 0
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff758f700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff758efc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f7             311799
+syrup: thread 2
+[Switching to thread 2 (Thread 0x7ffff7d90700 (LWP 311798))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff758f700 (LWP 311799)]
+
+Thread 3 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Appending hit checkpoint 3 at 0x5555555551a9 by thread 3
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #3
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf758f700          -145164544
+syrup: WE ARE IN THREAD #2
+syrup: thread 2
+[Switching to thread 2 (Thread 0x7ffff7d90700 (LWP 311798))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x1                 1
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff758f700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff758efc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f7             311799
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 311797)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff758f700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff758efc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: Appending hit checkpoint 4 at 0x7ffff7f8e2ec by thread 1
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #3
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf758f700          -145164544
+syrup: WE ARE IN THREAD #2
+syrup: thread 2
+[Switching to thread 2 (Thread 0x7ffff7d90700 (LWP 311798))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x1                 1
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff758f700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff758efc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f7             311799
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff758f700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff758efc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	in ../sysdeps/unix/sysv/linux/createthread.c
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d90700 (LWP 311798)]
+
+Thread 2 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 0
+New value = 1
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Appending hit checkpoint 5 at 0x5555555551c4 by thread 2
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #3
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  0x00005555555551ad in increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf758f700          -145164544
+syrup: WE ARE IN THREAD #2
+syrup: thread 2
+[Switching to thread 2 (Thread 0x7ffff7d90700 (LWP 311798))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x1                 1
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff758f700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff758efc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f7             311799
+syrup: thread 2
+[Switching to thread 2 (Thread 0x7ffff7d90700 (LWP 311798))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff7d90700 (LWP 311798) exited]
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 3, 4}
+syrup: newly_created_threads:
+{4}
+[New Thread 0x7ffff6d8e700 (LWP 311800)]
+[Switching to Thread 0x7ffff758f700 (LWP 311799)]
+
+Thread 3 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 1
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Appending hit checkpoint 6 at 0x5555555551bb by thread 3
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #4
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	../sysdeps/unix/sysv/linux/x86_64/clone.S: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x0                 0
+syrup: WE ARE IN THREAD #3
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x1                 1
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	../sysdeps/unix/sysv/linux/x86_64/clone.S: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f8             311800
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 311797)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff6d8e700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff6d8dfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: Appending hit checkpoint 7 at 0x7ffff7f8e2ec by thread 1
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #4
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf6d8e700          -153557248
+syrup: WE ARE IN THREAD #3
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x2                 2
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff6d8e700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff6d8dfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f8             311800
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff6d8e700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff6d8dfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	in ../sysdeps/unix/sysv/linux/createthread.c
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff758f700 (LWP 311799)]
+
+Thread 3 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 1
+New value = 2
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Appending hit checkpoint 8 at 0x5555555551c4 by thread 3
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #4
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf6d8e700          -153557248
+syrup: WE ARE IN THREAD #3
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x2                 2
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ed in create_thread (pd=pd@entry=0x7ffff6d8e700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff6d8dfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f8             311800
+syrup: thread 3
+[Switching to thread 3 (Thread 0x7ffff758f700 (LWP 311799))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff758f700 (LWP 311799) exited]
+[Switching to Thread 0x7ffff6d8e700 (LWP 311800)]
+
+Thread 4 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Appending hit checkpoint 9 at 0x5555555551a9 by thread 4
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #4
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf6d8e700          -153557248
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ed in create_thread (pd=pd@entry=0x7ffff6d8e700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff6d8dfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f8             311800
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 4, 5}
+syrup: newly_created_threads:
+{5}
+[New Thread 0x7ffff658d700 (LWP 311801)]
+
+Thread 4 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 2
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Appending hit checkpoint 10 at 0x5555555551bb by thread 4
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #5
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf658d700          -161949952
+syrup: WE ARE IN THREAD #4
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x2                 2
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff658d700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff658cfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f9             311801
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 311797)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff658d700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff658cfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: Appending hit checkpoint 11 at 0x7ffff7f8e2ec by thread 1
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #5
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf658d700          -161949952
+syrup: WE ARE IN THREAD #4
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x3                 3
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff658d700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff658cfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f9             311801
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff658d700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff658cfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	in ../sysdeps/unix/sysv/linux/createthread.c
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff658d700 (LWP 311801)]
+
+Thread 5 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Appending hit checkpoint 12 at 0x5555555551a9 by thread 5
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #5
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf658d700          -161949952
+syrup: WE ARE IN THREAD #4
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x3                 3
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff658d700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff658cfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f9             311801
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff6d8e700 (LWP 311800)]
+
+Thread 4 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 2
+New value = 3
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Appending hit checkpoint 13 at 0x5555555551c4 by thread 4
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #5
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf658d700          -161949952
+syrup: WE ARE IN THREAD #4
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x3                 3
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ed in create_thread (pd=pd@entry=0x7ffff658d700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff658cfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1f9             311801
+syrup: thread 4
+[Switching to thread 4 (Thread 0x7ffff6d8e700 (LWP 311800))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff6d8e700 (LWP 311800) exited]
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 5, 6}
+syrup: newly_created_threads:
+{6}
+[New Thread 0x7ffff5d8c700 (LWP 311802)]
+[Switching to Thread 0x7ffff7d91740 (LWP 311797)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff5d8c700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff5d8bfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: Appending hit checkpoint 14 at 0x7ffff7f8e2ec by thread 1
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #6
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf5d8c700          -170342656
+syrup: WE ARE IN THREAD #5
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x3                 3
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff5d8c700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff5d8bfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fa             311802
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff5d8c700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff5d8bfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	in ../sysdeps/unix/sysv/linux/createthread.c
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff658d700 (LWP 311801)]
+
+Thread 5 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 3
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Appending hit checkpoint 15 at 0x5555555551bb by thread 5
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #6
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf5d8c700          -170342656
+syrup: WE ARE IN THREAD #5
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x3                 3
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ed in create_thread (pd=pd@entry=0x7ffff5d8c700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff5d8bfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fa             311802
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff5d8c700 (LWP 311802)]
+
+Thread 6 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Appending hit checkpoint 16 at 0x5555555551a9 by thread 6
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #6
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf5d8c700          -170342656
+syrup: WE ARE IN THREAD #5
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4                 4
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ed in create_thread (pd=pd@entry=0x7ffff5d8c700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff5d8bfc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fa             311802
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{1, 5, 6, 7}
+syrup: newly_created_threads:
+{7}
+[New Thread 0x7ffff558b700 (LWP 311803)]
+[Switching to Thread 0x7ffff658d700 (LWP 311801)]
+
+Thread 5 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 3
+New value = 4
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Appending hit checkpoint 17 at 0x5555555551c4 by thread 5
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #7
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	../sysdeps/unix/sysv/linux/x86_64/clone.S: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x0                 0
+syrup: WE ARE IN THREAD #6
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  0x00005555555551ad in increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf5d8c700          -170342656
+syrup: WE ARE IN THREAD #5
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4                 4
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	../sysdeps/unix/sysv/linux/x86_64/clone.S: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fb             311803
+syrup: thread 5
+[Switching to thread 5 (Thread 0x7ffff658d700 (LWP 311801))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff658d700 (LWP 311801) exited]
+[Switching to Thread 0x7ffff558b700 (LWP 311803)]
+
+Thread 7 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Appending hit checkpoint 18 at 0x5555555551a9 by thread 7
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #7
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf558b700          -178735360
+syrup: WE ARE IN THREAD #6
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4                 4
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff558b700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff558afc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fb             311803
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff5d8c700 (LWP 311802)]
+
+Thread 6 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 4
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Appending hit checkpoint 19 at 0x5555555551bb by thread 6
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #7
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  0x00005555555551ad in increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf558b700          -178735360
+syrup: WE ARE IN THREAD #6
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4                 4
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff558b700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff558afc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fb             311803
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 311797)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff558b700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff558afc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: Appending hit checkpoint 20 at 0x7ffff7f8e2ec by thread 1
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #7
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  0x00005555555551ad in increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf558b700          -178735360
+syrup: WE ARE IN THREAD #6
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4                 4
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff558b700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff558afc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fb             311803
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff558b700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff558afc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	in ../sysdeps/unix/sysv/linux/createthread.c
+syrup: Posting continue to the event queue
+syrup: continue
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{8, 1, 6, 7}
+syrup: newly_created_threads:
+{8}
+[New Thread 0x7ffff4d8a700 (LWP 311804)]
+[Switching to Thread 0x7ffff558b700 (LWP 311803)]
+
+Thread 7 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 4
+New value = 5
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Appending hit checkpoint 21 at 0x5555555551bb by thread 7
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	../sysdeps/unix/sysv/linux/x86_64/clone.S: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x0                 0
+syrup: WE ARE IN THREAD #7
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x5                 5
+syrup: WE ARE IN THREAD #6
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x5                 5
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	../sysdeps/unix/sysv/linux/x86_64/clone.S: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fc             311804
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff5d8c700 (LWP 311802)]
+
+Thread 6 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 5
+New value = 6
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Appending hit checkpoint 22 at 0x5555555551c4 by thread 6
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:78
+78	../sysdeps/unix/sysv/linux/x86_64/clone.S: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x0                 0
+syrup: WE ARE IN THREAD #7
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x6                 6
+syrup: WE ARE IN THREAD #6
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x5                 5
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4d8a700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4d89fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fc             311804
+syrup: thread 6
+[Switching to thread 6 (Thread 0x7ffff5d8c700 (LWP 311802))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff5d8c700 (LWP 311802) exited]
+[Switching to Thread 0x7ffff7d91740 (LWP 311797)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4d8a700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4d89fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: Appending hit checkpoint 23 at 0x7ffff7f8e2ec by thread 1
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf4d8a700          -187128064
+syrup: WE ARE IN THREAD #7
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x6                 6
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4d8a700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4d89fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fc             311804
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4d8a700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4d89fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	in ../sysdeps/unix/sysv/linux/createthread.c
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff558b700 (LWP 311803)]
+
+Thread 7 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 6
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Appending hit checkpoint 24 at 0x5555555551c4 by thread 7
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf4d8a700          -187128064
+syrup: WE ARE IN THREAD #7
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x6                 6
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4d8a700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4d89fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fc             311804
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff4d8a700 (LWP 311804)]
+
+Thread 8 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Appending hit checkpoint 25 at 0x5555555551a9 by thread 8
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf4d8a700          -187128064
+syrup: WE ARE IN THREAD #7
+syrup: thread 7
+[Switching to thread 7 (Thread 0x7ffff558b700 (LWP 311803))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x6                 6
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ed in create_thread (pd=pd@entry=0x7ffff4d8a700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4d89fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fc             311804
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff558b700 (LWP 311803) exited]
+syrup: ThreadCreationListener was called
+syrup: alive_threads:
+{8, 9, 1}
+syrup: newly_created_threads:
+{9}
+[New Thread 0x7ffff4589700 (LWP 311805)]
+[Switching to Thread 0x7ffff4589700 (LWP 311805)]
+
+Thread 9 "a.out" hit Breakpoint 5, increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Appending hit checkpoint 26 at 0x5555555551a9 by thread 9
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #9
+syrup: thread 9
+[Switching to thread 9 (Thread 0x7ffff4589700 (LWP 311805))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf4589700          -195520768
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x6                 6
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4589700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4588fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fd             311805
+syrup: thread 9
+[Switching to thread 9 (Thread 0x7ffff4589700 (LWP 311805))]
+#0  increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff4d8a700 (LWP 311804)]
+
+Thread 8 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 6
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Appending hit checkpoint 27 at 0x5555555551bb by thread 8
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #9
+syrup: thread 9
+[Switching to thread 9 (Thread 0x7ffff4589700 (LWP 311805))]
+#0  0x00005555555551ad in increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf4589700          -195520768
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x6                 6
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4589700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4588fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fd             311805
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff7d91740 (LWP 311797)]
+
+Thread 1 "a.out" hit Breakpoint 3, 0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4589700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4588fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: Appending hit checkpoint 28 at 0x7ffff7f8e2ec by thread 1
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #9
+syrup: thread 9
+[Switching to thread 9 (Thread 0x7ffff4589700 (LWP 311805))]
+#0  0x00005555555551ad in increment (arguments=0x0) at counter-2-threads.c:9
+9	void *increment(void *arguments) {
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xf4589700          -195520768
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x7                 7
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4589700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4588fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fd             311805
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ec in create_thread (pd=pd@entry=0x7ffff4589700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4588fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	in ../sysdeps/unix/sysv/linux/createthread.c
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff4d8a700 (LWP 311804)]
+
+Thread 8 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 6
+New value = 7
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Appending hit checkpoint 29 at 0x5555555551c4 by thread 8
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #9
+syrup: thread 9
+[Switching to thread 9 (Thread 0x7ffff4589700 (LWP 311805))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x7                 7
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x7                 7
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ed in create_thread (pd=pd@entry=0x7ffff4589700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4588fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fd             311805
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Posting continue to the event queue
+syrup: continue
+[Switching to Thread 0x7ffff4589700 (LWP 311805)]
+
+Thread 9 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 7
+0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Appending hit checkpoint 30 at 0x5555555551bb by thread 9
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #9
+syrup: thread 9
+[Switching to thread 9 (Thread 0x7ffff4589700 (LWP 311805))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x7                 7
+syrup: WE ARE IN THREAD #8
+syrup: thread 8
+[Switching to thread 8 (Thread 0x7ffff4d8a700 (LWP 311804))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x7                 7
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x00007ffff7f8e2ed in create_thread (pd=pd@entry=0x7ffff4589700, attr=attr@entry=0x7fffffffd690, stopped_start=stopped_start@entry=0x7fffffffd68e, stackaddr=stackaddr@entry=0x7ffff4588fc0, thread_ran=thread_ran@entry=0x7fffffffd68f) at ../sysdeps/unix/sysv/linux/createthread.c:101
+101	../sysdeps/unix/sysv/linux/createthread.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x4c1fd             311805
+syrup: thread 9
+[Switching to thread 9 (Thread 0x7ffff4589700 (LWP 311805))]
+#0  0x00005555555551bb in increment (arguments=0x0) at counter-2-threads.c:10
+10		counter++;
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff4d8a700 (LWP 311804) exited]
+
+Thread 9 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Old value = 7
+New value = 8
+increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Appending hit checkpoint 31 at 0x5555555551c4 by thread 9
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #9
+syrup: thread 9
+[Switching to thread 9 (Thread 0x7ffff4589700 (LWP 311805))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x8                 8
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  __pthread_clockjoin_ex (threadid=140737292834560, thread_return=0x0, clockid=<optimised out>, abstime=<optimised out>, block=<optimised out>) at pthread_join_common.c:145
+145	pthread_join_common.c: No such file or directory.
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0xfffffe00          -512
+syrup: thread 9
+[Switching to thread 9 (Thread 0x7ffff4589700 (LWP 311805))]
+#0  increment (arguments=0x0) at counter-2-threads.c:11
+11	}
+syrup: Posting continue to the event queue
+syrup: continue
+[Thread 0x7ffff4589700 (LWP 311805) exited]
+[Switching to Thread 0x7ffff7d91740 (LWP 311797)]
+
+Thread 1 "a.out" hit Hardware access (read/write) watchpoint 4: counter
+
+Value = 8
+0x000055555555526e in main () at counter-2-threads.c:27
+27		printf("Counter value is %d\n", counter);
+syrup: Appending hit checkpoint 32 at 0x55555555526e by thread 1
+syrup: PRINTING THE EAX OF EACH THREAD
+syrup: WE ARE IN THREAD #1
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x000055555555526e in main () at counter-2-threads.c:27
+27		printf("Counter value is %d\n", counter);
+syrup: EAX VALUE iS
+syrup: info registers eax
+eax            0x8                 8
+syrup: thread 1
+[Switching to thread 1 (Thread 0x7ffff7d91740 (LWP 311797))]
+#0  0x000055555555526e in main () at counter-2-threads.c:27
+27		printf("Counter value is %d\n", counter);
+syrup: Posting continue to the event queue
+syrup: continue
+Counter value is 8
+[Inferior 1 (process 311797) exited normally]
+syrup: SecondPassInferiorExitListener has been called
+syrup: Posting <__main__.FinishSUTSecondPass object at 0x7f0a9797bfd0> to the event queue
+syrup: Disconnecting <__main__.SecondPassInferiorExitListener object at 0x7f0a97949be0> from <gdb.EventRegistry object at 0x7f0a97a963b0>
+syrup: Posting quit to the event queue
+syrup: quit
