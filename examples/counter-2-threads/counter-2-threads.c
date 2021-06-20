@@ -2,12 +2,17 @@
 #include <pthread.h>
 
 #define THREAD_COUNT 8
+#define NON_INCREMENT_THREAD_COUNT 1
 // @Syrup: shared-variable
 int counter = 0;
+int primes[] = {2, 3, 5, 7, 11, 13, 17, 19};
+int last_created_thread = 1;
 
 // @Syrup: entry-point
 void *increment(void *arguments) {
-	counter++;
+	int thread_number = ++last_created_thread;
+	int number_to_add = primes[thread_number - NON_INCREMENT_THREAD_COUNT - 1];
+	counter += number_to_add;
 }
 
 int main(void) {
