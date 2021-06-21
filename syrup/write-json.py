@@ -21,6 +21,11 @@ MAIN_THREAD_ID = 1
 CHECKPOINT_TAG = "checkpoints"
 OUTPUT_FILE = "./checkpoints.json"
 OUTPUT_FILE_INDENT_WIDTH = 2
+GDB_CONTINUE_INSTRUCTION = "continue"
+GDB_DELETE_BREAKPOINTS_INSTRUCTION = "delete"
+GDB_RUN_INSTRUCTION = "run"
+COUNTER_READ_INSTRUCTION_ADDRESS = "*0x5555555551bb"
+COUNTER_WRITE_INSTRUCTION_ADDRESS = "*0x5555555551c4"
 
 class ThreadCreationListener:
 	def __init__(self):
@@ -42,12 +47,12 @@ class ThreadCreationListener:
 
 	def _record_new_thread_creation(self, creator_thread, created_thread):
 		self._thread_creations.append({
-				"creator_thread": creator_thread,
-				"created_thread": created_thread
+				CHECKPOINT_ACTION_CREATOR_THREAD_TAG: creator_thread,
+				CHECKPOINT_ACTION_CREATED_THREAD_TAG: created_thread
 		})
 
 	def _run_thread_to_start_routine(self, thread):
-		gdb_wrapper.enqueue_execute("continue")
+		gdb_wrapper.enqueue_execute(GDB_CONTINUE_INSTRUCTION)
 
 	def _newly_created_thread(self):
 		alive_threads = set(map(
@@ -81,7 +86,7 @@ class SyscallRecorder:
 	def __call__(self, event):
 		log("Hit SyscallRecorder")
 		self.checkpoints.add(hex(gdb.selected_frame().older().pc()))
-		gdb_wrapper.enqueue_execute("continue")
+		gdb_wrapper.enqueue_execute(GDB_CONTINUE_INSTRUCTION)
 
 # This class records the order in which checkpoints are hit when the program
 # executes. A checkpoint is an assembly instruction which reads from or writes
@@ -95,7 +100,7 @@ class CheckpointRecorder:
 	def __call__(self, event):
 		self._record_hit_checkpoint()
 		self._print_eax_of_each_thread()
-		gdb_wrapper.enqueue_execute("continue")
+		gdb_wrapper.enqueue_execute(GDB_CONTINUE_INSTRUCTION)
 
 	def _print_eax_of_each_thread(self):
 		log("PRINTING THE EAX OF EACH THREAD")
@@ -134,7 +139,7 @@ class InferiorExitListener:
 		if not self._inferior_has_already_exited:
 			log("InferiorExitListener has been called")
 			self._inferior_has_already_exited = True
-			gdb_wrapper.enqueue_execute("delete")
+			gdb_wrapper.enqueue_execute(GDB_DELETE_BREAKPOINTS_INSTRUCTION)
 			gdb_wrapper.enqueue_disconnect(gdb.events.stop, self._syscall_recorder)
 			enqueue_run_sut_second_pass(self._syscall_recorder.checkpoints)
 
@@ -189,7 +194,7 @@ def continue_sut_second_pass(thread_creation_checkpoints):
 		thread_creation_checkpoints
 	)
 	gdb_wrapper.immediate_connect(gdb.events.exited, inferior_exit_listener)
-	gdb_wrapper.immediate_execute("continue")
+	gdb_wrapper.immediate_execute(GDB_CONTINUE_INSTRUCTION)
 
 class SecondPassInferiorExitListener:
 	def __init__(self, checkpoint_recorder, thread_creation_listener, thread_creation_checkpoints):
@@ -263,13 +268,15 @@ def finish_sut_second_pass(
 # recorded. Therefore, we only need to record the ordering of writes and reads
 # to shared variables.
 def set_shared_variable_breakpoints():
-	shared_variables = ["counter"]
-	for shared_variable in shared_variables:
-		gdb_wrapper.immediate_breakpoint_at(
-			shared_variable,
-			breakpoint_type=gdb.BP_WATCHPOINT,
-			wp_class=gdb.WP_ACCESS
-		)
+	#shared_variables = ["counter"]
+	#for shared_variable in shared_variables:
+	#	gdb_wrapper.immediate_breakpoint_at(
+	#		shared_variable,
+	#		breakpoint_type=gdb.BP_WATCHPOINT,
+	#		wp_class=gdb.WP_ACCESS
+	#	)
+	gdb_wrapper.immediate_breakpoint_at(COUNTER_READ_INSTRUCTION_ADDRESS)
+	gdb_wrapper.immediate_breakpoint_at(COUNTER_WRITE_INSTRUCTION_ADDRESS)
 
 def set_syscall_breakpoints(checkpoints):
 	for checkpoint in checkpoints:
@@ -281,7 +288,7 @@ def get_thread_creation_checkpoints():
 	gdb_wrapper.immediate_connect(gdb.events.stop, syscall_recorder)
 	exit_listener = InferiorExitListener(syscall_recorder)
 	gdb_wrapper.immediate_connect(gdb.events.exited, exit_listener)
-	gdb_wrapper.immediate_execute("run")
+	gdb_wrapper.immediate_execute(GDB_RUN_INSTRUCTION)
 
 def set_thread_start_routine_breakpoints():
 	start_routines = ["increment"]
@@ -290,7 +297,7 @@ def set_thread_start_routine_breakpoints():
 
 def pause_target_at_start():
 	gdb_wrapper.immediate_breakpoint_at("main")
-	gdb_wrapper.immediate_execute("run")
+	gdb_wrapper.immediate_execute(GDB_RUN_INSTRUCTION)
 
 class CheckpointMatcher:
 	def __init__(self, checkpoints, thread_creations,
@@ -305,7 +312,7 @@ class CheckpointMatcher:
 
 	def checkpoints_with_correctly_ordered_thread_creations(self):
 		return self._checkpoints
-		#return self._associated_checkpoints() # TODO enable matching again
+		return self._associated_checkpoints()
 
 	def _associated_checkpoints(self):
 		main_thread_id = 1
@@ -362,7 +369,7 @@ class CheckpointMatcher:
 		for checkpoint in self._unmatched_creator_thread_checkpoint_ids:
 			next_thread_creation = \
 					self._next_thread_creation_by_thread(checkpoint[THREAD_ID_TAG])
-			match = self._matching_checkpoint(next_thread_creation["created_thread"])
+			match = self._matching_checkpoint(next_thread_creation[CHECKPOINT_ACTION_CREATED_THREAD_TAG])
 			if match != None and not self._is_correct_order(checkpoint, match):
 				self._add_reorder(checkpoint[CHECKPOINT_ID_TAG],
 						match[CHECKPOINT_ID_TAG])
@@ -381,8 +388,8 @@ class CheckpointMatcher:
 	def _remove_thread_creation(self, creator_thread_checkpoint_id,
 			created_thread_checkpoint_id):
 		thread_creation_to_remove = ({
-				"creator_thread": creator_thread_checkpoint_id,
-				"created_thread": created_thread_checkpoint_id
+				CHECKPOINT_ACTION_CREATOR_THREAD_TAG: creator_thread_checkpoint_id,
+				CHECKPOINT_ACTION_CREATED_THREAD_TAG: created_thread_checkpoint_id
 		})
 		self._thread_creations.remove(thread_creation_to_remove)
 
@@ -418,7 +425,8 @@ class CheckpointMatcher:
 
 	def _next_thread_creation_by_thread(self, thread_id):
 		return next(filter(lambda thread_creation:
-				thread_creation["creator_thread"] == thread_id, self._thread_creations))
+				thread_creation[CHECKPOINT_ACTION_CREATOR_THREAD_TAG] == thread_id, self._thread_creations
+		))
 
 def get_start_routines():
 	return ["increment"]
