@@ -69,6 +69,12 @@ class CheckpointManager:
 		log(f"Current thread: {current_thread}")
 		return current_thread
 
+	def all_checkpoints_have_been_hit(self):
+		return len(list(filter(
+			lambda checkpoint: not checkpoint[CHECKPOINT_IS_HIT_TAG],
+			self.checkpoints
+		))) == 0
+
 	# Private methods
 	def _checkpoints_left_for_thread(self, thread):
 		log(f"Called _checkpoints_for_thread {thread}")
@@ -83,8 +89,6 @@ class CheckpointManager:
 		next_checkpoint = next(filter(
 			lambda checkpoint: not checkpoint[CHECKPOINT_IS_HIT_TAG], self.checkpoints
 		))
-		log("I want to hit this checkpoint next:")
-		pprint(next_checkpoint)
 		return next_checkpoint
 
 	def _next_checkpoint_for_thread(self, thread):
@@ -124,6 +128,9 @@ class BreakListener:
 		if self._checkpoint_manager.current_thread_should_finish():
 			log(f"Finishing current thread as all checkpoints have been hit")
 			gdb_wrapper.enqueue_execute("continue")
+		if self._checkpoint_manager.all_checkpoints_have_been_hit():
+			log("All checkpoints have been hit: inferior will exit now")
+			return
 		self._checkpoint_manager.switch_to_thread_for_next_checkpoint()
 		gdb_wrapper.enqueue_execute("continue")
 
@@ -140,6 +147,11 @@ class ThreadCreationListener:
 		self._checkpoint_manager.set_breakpoints_for_thread(created_thread)
 		self._checkpoint_manager.switch_to_thread_for_next_checkpoint()
 
+class InferiorExitListener:
+	def __call__(self, _):
+		log("Inferior has exited: quitting gdb")
+		gdb_wrapper.enqueue_execute("quit")
+
 def setup_gdb():
 	configure_gdb_to_run_as_a_script()
 	pause_target_at_beginning()
@@ -150,12 +162,13 @@ def configure_gdb_to_run_as_a_script():
 
 def pause_target_at_beginning():
 	entry_breakpoint = gdb_wrapper.immediate_breakpoint_at("main", is_temporary=True)
-	gdb_wrapper.immediate_execute("run")
+	gdb_wrapper.immediate_execute("run > log.txt")
 	gdb_wrapper.immediate_execute("set scheduler-locking on")
 
 def connect_listeners(checkpoint_manager):
 	gdb_wrapper.immediate_connect(gdb.events.stop, BreakListener(checkpoint_manager))
 	gdb_wrapper.immediate_connect(gdb.events.new_thread, ThreadCreationListener(checkpoint_manager))
+	gdb_wrapper.immediate_connect(gdb.events.exited, InferiorExitListener())
 
 def main():
 	setup_gdb()
