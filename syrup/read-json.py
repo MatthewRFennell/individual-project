@@ -13,6 +13,7 @@ sys.path.append(CURRENT_DIRECTORY)
 import gdb
 import json
 import collections
+import time
 from gdb_wrapper import gdb_wrapper
 from collections import Counter
 from pprint import pprint
@@ -75,6 +76,16 @@ class CheckpointManager:
 			self.checkpoints
 		))) == 0
 
+	def is_running_thread(self, thread):
+		log(f"Checking if {thread} is_running_thread")
+		currently_running_threads = list(map(
+				lambda thread: thread.num,
+				gdb.inferiors()[0].threads()
+		))
+		log(f"Currently running threads: {currently_running_threads}")
+		log(f"Thread is running: {thread in currently_running_threads}")
+		return thread in currently_running_threads
+
 	# Private methods
 	def _checkpoints_left_for_thread(self, thread):
 		log(f"Called _checkpoints_for_thread {thread}")
@@ -126,10 +137,7 @@ class BreakListener:
 			self._checkpoint_manager.current_thread()
 		)
 		if self._checkpoint_manager.current_thread_should_finish():
-			log(f"Finishing current thread as all checkpoints have been hit")
 			gdb_wrapper.enqueue_execute("continue")
-		if self._checkpoint_manager.all_checkpoints_have_been_hit():
-			log("All checkpoints have been hit: inferior will exit now")
 			return
 		self._checkpoint_manager.switch_to_thread_for_next_checkpoint()
 		gdb_wrapper.enqueue_execute("continue")
@@ -152,6 +160,17 @@ class InferiorExitListener:
 		log("Inferior has exited: quitting gdb")
 		gdb_wrapper.enqueue_execute("quit")
 
+class ThreadExitListener:
+	def __init__(self, checkpoint_manager):
+		self._checkpoint_manager = checkpoint_manager;
+
+	def __call__(self, _):
+		if self._checkpoint_manager.all_checkpoints_have_been_hit():
+			return
+		log("ThreadExitListener was called")
+		self._checkpoint_manager.switch_to_thread_for_next_checkpoint()
+		gdb_wrapper.enqueue_execute("continue")
+
 def setup_gdb():
 	configure_gdb_to_run_as_a_script()
 	pause_target_at_beginning()
@@ -162,12 +181,14 @@ def configure_gdb_to_run_as_a_script():
 
 def pause_target_at_beginning():
 	entry_breakpoint = gdb_wrapper.immediate_breakpoint_at("main", is_temporary=True)
-	gdb_wrapper.immediate_execute("run > log.txt")
+	gdb_wrapper.immediate_execute("run > execution.log")
 	gdb_wrapper.immediate_execute("set scheduler-locking on")
+	gdb_wrapper.immediate_execute("show non-stop")
 
 def connect_listeners(checkpoint_manager):
 	gdb_wrapper.immediate_connect(gdb.events.stop, BreakListener(checkpoint_manager))
 	gdb_wrapper.immediate_connect(gdb.events.new_thread, ThreadCreationListener(checkpoint_manager))
+	gdb_wrapper.immediate_connect(gdb.events.thread_exit, ThreadExitListener(checkpoint_manager))
 	gdb_wrapper.immediate_connect(gdb.events.exited, InferiorExitListener())
 
 def main():
